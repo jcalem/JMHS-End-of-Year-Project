@@ -34,7 +34,7 @@ public class Main extends JPanel implements Runnable{
 	HexMap map;
 	
 	public Main(){
-		map = new HexMap(10,10);
+		map = new HexMap(10,8);
 		start();
 	}
 	

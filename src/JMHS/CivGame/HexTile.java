@@ -6,7 +6,7 @@ import java.awt.Polygon;
 
 public class HexTile {
 	
-	public static final int RADIUS = 64;
+	public static final int RADIUS = 32;
 	private double x;
 	private double y;
 	
@@ -24,8 +24,8 @@ public class HexTile {
 		g.setColor(Color.BLACK);
 		double sin30 = RADIUS * Math.sin(Math.PI/6);
 		double sin60 = RADIUS * Math.sin(Math.PI/3);
-		int[] xcoords = {(int)Math.round(x + RADIUS), (int)Math.round(sin30 + x), (int)Math.round(x - sin30), (int)Math.round(x - RADIUS), (int)Math.round(x - sin30), (int)Math.round(sin30 + x)};
-		int[] ycoords = {(int)Math.round(y), (int)Math.round(sin60 + y), (int)Math.round(sin60 + y), (int)Math.round(y), (int)Math.round(y - sin60), (int)Math.round(y - sin60)};
+		int[] ycoords = {(int)Math.round(y + RADIUS), (int)Math.round(sin30 + y), (int)Math.round(y - sin30), (int)Math.round(y - RADIUS), (int)Math.round(y - sin30), (int)Math.round(sin30 + y)};
+		int[] xcoords = {(int)Math.round(x), (int)Math.round(sin60 + x), (int)Math.round(sin60 + x), (int)Math.round(x), (int)Math.round(x - sin60), (int)Math.round(x - sin60)};
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 		g.drawPolygon(p);
 	}
