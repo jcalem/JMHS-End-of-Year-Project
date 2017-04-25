@@ -6,7 +6,7 @@ import java.awt.Polygon;
 
 public class HexTile {
 	
-	public static final int RADIUS = 32;
+	public static int RADIUS = 32;
 	private double x;
 	private double y;
 	
@@ -19,6 +19,10 @@ public class HexTile {
 	}
 	public double getY(){
 		return this.y;
+	}
+	public void setCoords(int x, int y){
+		this.x = x;
+		this.y = y;
 	}
 	public void draw(Graphics g){
 		g.setColor(Color.BLACK);
