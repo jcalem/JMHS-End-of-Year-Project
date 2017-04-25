@@ -6,19 +6,22 @@ import java.awt.Polygon;
 
 public class HexTile {
 	
-	public static int RADIUS = 32;
+	public static final int r = 64;
+	public static int RADIUS = r;
 	private double x;
 	private double y;
+	private double mapx;
+	private double mapy;
 	
-	public HexTile(double x, double y){
-		this.x = x;
-		this.y = y;
+	public HexTile(double mapx, double mapy){
+		this.mapx = mapx;
+		this.mapy = mapy;
 	}
 	public double getX(){
-		return this.x;
+		return this.mapx;
 	}
 	public double getY(){
-		return this.y;
+		return this.mapy;
 	}
 	public void setCoords(int x, int y){
 		this.x = x;
@@ -33,10 +36,10 @@ public class HexTile {
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 		g.drawPolygon(p);
 	}
-	public static int[] getBottomRight(double x, double y){
+	/*public static int[] getBottomRight(double x, double y){
 		double sin30 = RADIUS * Math.sin(Math.PI/6);
 		double sin60 = RADIUS * Math.sin(Math.PI/3);
 		int[] coord = {(int)Math.round(sin30 + x), (int)Math.round(y - sin60)};
 		return coord;
-	}
+	}*/
 }
