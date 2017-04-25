@@ -14,6 +14,7 @@ public class HexMap {
 		double starty = (HexTile.RADIUS * Main.SCALE);
 		double newx = startx;
 		double newy = starty;
+		
 		/*for(int j = 0; j < gameHexs[0].length; j++){
 			int[] coords = HexTile.getBottomRight(newx, newy); 
 			gameHexs[0][j] = new HexTile((int)Math.round(coords[0] + HexTile.RADIUS), (int)Math.round(coords[1]));
@@ -23,7 +24,7 @@ public class HexMap {
 		for(int i = 0; i < gameHexs.length; i++){
 			for(int j = 0; j < gameHexs[0].length; j++){
 				gameHexs[i][j] = new HexTile(startx + j * (HexTile.RADIUS + HexTile.RADIUS * Math.sin(Math.PI/6)), j * HexTile.RADIUS * Main.SCALE + (starty * i));
-				System.out.println(gameHexs[i][j].getX() + "," + gameHexs[i][j].getY());
+				System.out.println(gameHexs[i][j].getX() + ",memes" + gameHexs[i][j].getY());
 			}
 		}
 	}
