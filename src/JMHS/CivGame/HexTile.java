@@ -34,6 +34,17 @@ public class HexTile {
 		int[] ycoords = {(int)Math.round(y + RADIUS), (int)Math.round(sin30 + y), (int)Math.round(y - sin30), (int)Math.round(y - RADIUS), (int)Math.round(y - sin30), (int)Math.round(sin30 + y)};
 		int[] xcoords = {(int)Math.round(x), (int)Math.round(sin60 + x), (int)Math.round(sin60 + x), (int)Math.round(x), (int)Math.round(x - sin60), (int)Math.round(x - sin60)};
 		Polygon p = new Polygon(xcoords, ycoords, 6);
+		
 		g.drawPolygon(p);
+	}
+	public void draw(Graphics g, int num){
+		g.setColor(Color.BLACK);
+		double sin30 = RADIUS * Math.sin(Math.PI/6);
+		double sin60 = RADIUS * Math.sin(Math.PI/3);
+		int[] ycoords = {(int)Math.round(y + RADIUS), (int)Math.round(sin30 + y), (int)Math.round(y - sin30), (int)Math.round(y - RADIUS), (int)Math.round(y - sin30), (int)Math.round(sin30 + y)};
+		int[] xcoords = {(int)Math.round(x), (int)Math.round(sin60 + x), (int)Math.round(sin60 + x), (int)Math.round(x), (int)Math.round(x - sin60), (int)Math.round(x - sin60)};
+		Polygon p = new Polygon(xcoords, ycoords, 6);
+		
+		g.fillPolygon(p);
 	}
 }

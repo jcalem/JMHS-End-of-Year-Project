@@ -35,12 +35,17 @@ public class HexMap {
 		for (int i = 0; i < gameBoard.size(); i++) {
 			int boardx = (int) Math.round(ZOOM * (gameBoard.get(i).getX() - (x - (Main.WIDTH / (ZOOM * 2)))));
 			int boardy = (int) Math.round(ZOOM * (gameBoard.get(i).getY() - (y - (Main.HEIGHT / (ZOOM * 2)))));
+			if(boardx < -(Main.SCALE * HexTile.RADIUS))
+				boardx += 2 * gameHexs.length * HexTile.RADIUS * Main.SCALE;
+			if(boardx > Main.WIDTH + (Main.SCALE * HexTile.RADIUS))
+				boardx -= 2 * gameHexs.length * HexTile.RADIUS * Main.SCALE;
 			// int boardx = (int)Math.round(ZOOM*(gameBoard.get(i).getX() %
 			// (Main.WIDTH/ZOOM)));
 			// int boardy = (int)Math.round(ZOOM*(gameBoard.get(i).getY() %
 			// (Main.HEIGHT/ZOOM)));
 			gameBoard.get(i).setCoords(boardx, boardy);
-			gameBoard.get(i).draw(g);
+			if(i == 0) gameBoard.get(i).draw(g, i);
+			else gameBoard.get(i).draw(g);
 		}
 	}
 

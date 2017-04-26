@@ -79,7 +79,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	private void tick() {
-		System.out.println(map.x + "," + map.y);
+		System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
+		if(map.x >= (int)Math.round(2 * SCALE * HexTile.RADIUS * map.gameHexs.length + WIDTH/2)) 
+			map.x = 640;
 		if (movingLeft)
 			map.x -= map.movingSpeed / map.ZOOM;
 		else if (movingRight)
