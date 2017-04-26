@@ -36,10 +36,4 @@ public class HexTile {
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 		g.drawPolygon(p);
 	}
-	/*public static int[] getBottomRight(double x, double y){
-		double sin30 = RADIUS * Math.sin(Math.PI/6);
-		double sin60 = RADIUS * Math.sin(Math.PI/3);
-		int[] coord = {(int)Math.round(sin30 + x), (int)Math.round(y - sin60)};
-		return coord;
-	}*/
 }
