@@ -41,7 +41,7 @@ public class HexMap {
 				boardx -= 2 * gameHexs.length * HexTile.RADIUS * Main.SCALE;
 			gameBoard.get(i).setCoords(boardx, boardy);
 			if(i == 0) gameBoard.get(i).draw(g, i);
-			//else gameBoard.get(i).draw(g);
+			else gameBoard.get(i).draw(g);
 		}
 	}
 
