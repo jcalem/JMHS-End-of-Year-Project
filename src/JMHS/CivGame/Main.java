@@ -79,7 +79,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	private void tick() {
-		System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
+		//System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
 		if(map.x >= (int)Math.round(2 * SCALE * HexTile.RADIUS * map.gameHexs.length + WIDTH/2)) 
 			map.x = 640;
 		if (movingLeft)
@@ -93,8 +93,10 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	public void paintComponent(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 		g.setColor(Color.BLACK);
-		// g.fillRect(0, 0, Driver.WIDTH, Driver.HEIGHT);
+		//g.fillRect(0, 0, Driver.WIDTH, Driver.HEIGHT);
 		map.draw(g);
 	}
 

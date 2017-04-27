@@ -31,7 +31,7 @@ public class HexMap {
 		MapSize = 0;
 		gameBoard.clear();
 		calculateRenderBox();
-		// System.out.println(gameBoard);
+		//System.out.println(gameBoard.size());
 		for (int i = 0; i < gameBoard.size(); i++) {
 			int boardx = (int) Math.round(ZOOM * (gameBoard.get(i).getX() - (x - (Main.WIDTH / (ZOOM * 2)))));
 			int boardy = (int) Math.round(ZOOM * (gameBoard.get(i).getY() - (y - (Main.HEIGHT / (ZOOM * 2)))));
