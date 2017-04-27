@@ -7,7 +7,7 @@ import java.awt.Polygon;
 public class HexTile {
 	
 	public static final int r = 64;
-	public static int RADIUS = r;
+	public static double RADIUS = r;
 	private double x;
 	private double y;
 	private double mapx;
@@ -23,7 +23,7 @@ public class HexTile {
 	public double getY(){
 		return this.mapy;
 	}
-	public void setCoords(int x, int y){
+	public void setCoords(double x, double y){
 		this.x = x;
 		this.y = y;
 	}

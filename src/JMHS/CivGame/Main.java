@@ -16,14 +16,14 @@ import javax.swing.JPanel;
 public class Main extends JPanel implements Runnable, KeyListener, MouseWheelListener {
 
 	private static final String title = "End of Year Project";
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = 720;
+	public static final double WIDTH = 1280;
+	public static final double HEIGHT = 720;
 	public static final double SCALE = Math.sqrt(3) / 2;
 
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame();
-		frame.setSize(WIDTH, HEIGHT);
+		frame.setSize((int)WIDTH, (int)HEIGHT);
 		frame.setResizable(false);
 		frame.setLayout(new BorderLayout());
 		frame.add(new Main(), BorderLayout.CENTER);
@@ -47,7 +47,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		setFocusable(true);
 		addKeyListener(this);
 		addMouseWheelListener(this);
-		map = new HexMap(16, 10);
+		map = new HexMap(20, 10);
 		start();
 	}
 
@@ -79,9 +79,11 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	private void tick() {
-		System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
-		if(map.x >= (int)Math.round(2 * SCALE * HexTile.RADIUS * map.gameHexs.length + WIDTH/2)) 
+		System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS + " " + map.ZOOM);
+		if(map.x >= 2 * SCALE * HexTile.RADIUS * map.gameHexs.length + WIDTH/2){ 
+			//System.out.println(2 * SCALE * HexTile.RADIUS * map.gameHexs.length + WIDTH/2);
 			map.x = 640;
+		}
 		if (movingLeft)
 			map.x -= map.movingSpeed / map.ZOOM;
 		else if (movingRight)
@@ -93,8 +95,10 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	public void paintComponent(Graphics g) {
+		//g.dispose();
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, (int)WIDTH, (int)HEIGHT);
 		g.setColor(Color.BLACK);
-		// g.fillRect(0, 0, Driver.WIDTH, Driver.HEIGHT);
 		map.draw(g);
 	}
 
