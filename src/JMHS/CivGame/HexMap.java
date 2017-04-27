@@ -27,7 +27,7 @@ public class HexMap {
 		}
 	}
 
-	public void draw(Graphics g) {
+	public void draw(Graphics g){
 		MapSize = 0;
 		gameBoard.clear();
 		calculateRenderBox();
