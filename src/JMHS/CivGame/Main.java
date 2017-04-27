@@ -95,7 +95,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.WHITE);
-		//g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.fillRect(0, 0, (int)WIDTH, (int)HEIGHT);
 		g.setColor(Color.BLACK);
 		map.draw(g);
 	}
