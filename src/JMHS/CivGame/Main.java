@@ -79,10 +79,12 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	private void tick() {
-		//System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
-		if(map.x >= (int)Math.round(2 * SCALE * HexTile.RADIUS * map.gameHexs.length + WIDTH/2)){ 
-			map.x = 640;
+		System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
+		if(map.x >= 2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM * WIDTH/2)){ 
+			map.x = map.ZOOM * WIDTH/2;
 		}
+		//System.out.println(2 * map.gameHexs.length * map.gameHexs[0][0].RADIUS * Main.SCALE + );
+		
 		if (movingLeft)
 			map.x -= map.movingSpeed / map.ZOOM;
 		else if (movingRight)
@@ -127,8 +129,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (e.getWheelRotation() > 0)
-			map.ZOOM -= .1;
+			map.ZOOM -= .0625;
 		if (e.getWheelRotation() < 0)
-			map.ZOOM += .1;
+			map.ZOOM += .0625;
 	}
 }
