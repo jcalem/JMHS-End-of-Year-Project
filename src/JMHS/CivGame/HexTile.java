@@ -36,11 +36,17 @@ public class HexTile {
 	}
 	public String getType(){
 		if(color <= .55) return "sea";
+		if(color > .85) return "mountain";
+		//if(color > .75) return "hill";
 		else return "land";
 	}
 	public void draw(Graphics g){
 		if(type.equals("land"))
 			g.setColor(Color.GREEN);
+		else if(type.equals("mountain"))
+			g.setColor(Color.GRAY);
+		else if(type.equals("hill"))
+			g.setColor(Color.MAGENTA);
 		else
 			g.setColor(Color.BLUE);
 		double sin30 = RADIUS * Math.sin(Math.PI/6);

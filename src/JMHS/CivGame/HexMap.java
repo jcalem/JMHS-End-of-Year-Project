@@ -17,7 +17,7 @@ public class HexMap {
 	float[][] color;
 
 	public HexMap(int numx, int numy) {
-        int octaveCount = 4;
+        int octaveCount = 5;
 		gameHexs = new HexTile[numx][numy];
 		GenerateMap hexColors = new GenerateMap(gameHexs.length, gameHexs[0].length);
 		float[][] color = hexColors.GeneratePerlinNoise(gameHexs.length, gameHexs[0].length, octaveCount);

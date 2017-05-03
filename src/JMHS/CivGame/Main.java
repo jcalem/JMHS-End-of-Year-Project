@@ -67,7 +67,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			repaint();
 
 			elapsed = System.nanoTime() - start;
-			wait = (100 / 6) - elapsed / 1000000;
+			wait = (200 / 6) - elapsed / 1000000;
 			if (wait <= 0)
 				wait = 5;
 			try {
