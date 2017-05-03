@@ -12,11 +12,14 @@ public class HexTile {
 	private double y;
 	private double mapx;
 	private double mapy;
-	private String type = "sea";
+	private String type;
+	private float color;
 	
-	public HexTile(double mapx, double mapy){
+	public HexTile(double mapx, double mapy, float color){
 		this.mapx = mapx;
 		this.mapy = mapy;
+		this.color = color;
+		type = getType();
 	}
 	public double getX(){
 		return this.mapx;
@@ -31,6 +34,10 @@ public class HexTile {
 	public void setType(String type){
 		this.type = type;
 	}
+	public String getType(){
+		if(color <= .55) return "sea";
+		else return "land";
+	}
 	public void draw(Graphics g){
 		if(type.equals("land"))
 			g.setColor(Color.GREEN);
@@ -41,8 +48,10 @@ public class HexTile {
 		int[] ycoords = {(int)Math.round(y + RADIUS), (int)Math.round(sin30 + y), (int)Math.round(y - sin30), (int)Math.round(y - RADIUS), (int)Math.round(y - sin30), (int)Math.round(sin30 + y)};
 		int[] xcoords = {(int)Math.round(x), (int)Math.round(sin60 + x), (int)Math.round(sin60 + x), (int)Math.round(x), (int)Math.round(x - sin60), (int)Math.round(x - sin60)};
 		Polygon p = new Polygon(xcoords, ycoords, 6);
-		
+		//g.setColor(new Color(color, color, color));
 		g.fillPolygon(p);
+		g.setColor(Color.BLACK);
+		g.drawPolygon(p);
 	}
 	public void draw(Graphics g, int num){
 		g.setColor(Color.BLACK);

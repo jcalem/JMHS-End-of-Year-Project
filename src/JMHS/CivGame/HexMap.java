@@ -14,17 +14,22 @@ public class HexMap {
 	double startx = HexTile.RADIUS;
 	double starty = (HexTile.RADIUS * Main.SCALE);
 	int movingSpeed = 10;
+	float[][] color;
 
 	public HexMap(int numx, int numy) {
-
+        int octaveCount = 4;
 		gameHexs = new HexTile[numx][numy];
-
+		GenerateMap hexColors = new GenerateMap(gameHexs.length, gameHexs[0].length);
+		float[][] color = hexColors.GeneratePerlinNoise(gameHexs.length, gameHexs[0].length, octaveCount);
+		
 		for (int i = 0; i < gameHexs.length; i++) {
 			for (int j = 0; j < gameHexs[0].length; j++) {
 				gameHexs[i][j] = new HexTile(j * HexTile.RADIUS * Main.SCALE + (2 * starty * i) + starty,
-						startx + j * (HexTile.RADIUS + HexTile.RADIUS * Math.sin(Math.PI / 6)));
+						startx + j * (HexTile.RADIUS + HexTile.RADIUS * Math.sin(Math.PI / 6)), color[i][j]);
 			}
 		}
+
+        
 	}
 
 	public void draw(Graphics g){
@@ -57,7 +62,7 @@ public class HexMap {
 		}
 	}
 	
-	public void GenerateMap(int numIslands){
+	/*public void GenerateMap(int numIslands){
 		for(int i = 0; i < numIslands * 2 - 1; i += 2){
 			int centerx = (int)(Math.random() * gameHexs.length);
 			int centery = (int)(Math.random() * gameHexs[0].length);
@@ -86,5 +91,5 @@ public class HexMap {
 				gameHexs[i][y].setType("land");
 			}
 		}
-	}
+	}*/
 }
