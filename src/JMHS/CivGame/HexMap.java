@@ -56,4 +56,35 @@ public class HexMap {
 			}
 		}
 	}
+	
+	public void GenerateMap(int numIslands){
+		for(int i = 0; i < numIslands * 2 - 1; i += 2){
+			int centerx = (int)(Math.random() * gameHexs.length);
+			int centery = (int)(Math.random() * gameHexs[0].length);
+			GenerateContinent(centerx, centery);
+		}
+		
+	}
+	public void GenerateContinent(int centerx, int centery){
+		int hradius = (int)(Math.random() * gameHexs.length/3 + 5);
+		int vradius = (int)(Math.random() * gameHexs[0].length/3 + 5);
+		int left = centerx - hradius; 
+		int right = centerx + hradius;
+		System.out.println(left + " " + right + " " + centerx + " " + hradius);
+		if(left < 0) left += gameHexs.length;
+		if(right >= gameHexs.length) left = left % gameHexs.length;
+		int bottom = centery - vradius; 
+		int top = centery + vradius;
+		System.out.println(top + " " + bottom + " " + centery + " " + vradius);
+		if(bottom < 0) bottom = 0;
+		if(top >= gameHexs[0].length) top = gameHexs[0].length - 1;
+		System.out.println(left + " " + right + " " + centerx + " " + hradius);
+		System.out.println(top + " " + bottom + " " + centery + " " + vradius);
+		for(int i = left; i < right; i++){
+			for(int y = bottom; y < top; y++){
+				if(i >= gameHexs.length) i = 0;
+				gameHexs[i][y].setType("land");
+			}
+		}
+	}
 }

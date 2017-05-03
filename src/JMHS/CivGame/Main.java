@@ -47,7 +47,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		setFocusable(true);
 		addKeyListener(this);
 		addMouseWheelListener(this);
-		map = new HexMap(20, 10);
+		map = new HexMap(80, 52);
+		map.GenerateMap(1);
 		start();
 	}
 
@@ -79,7 +80,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	private void tick() {
-		System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
+		//System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
 		if(map.x >= 2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM * WIDTH/2)){ 
 			map.x = map.ZOOM * WIDTH/2;
 		}

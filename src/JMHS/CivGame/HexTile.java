@@ -12,6 +12,7 @@ public class HexTile {
 	private double y;
 	private double mapx;
 	private double mapy;
+	private String type = "sea";
 	
 	public HexTile(double mapx, double mapy){
 		this.mapx = mapx;
@@ -27,15 +28,21 @@ public class HexTile {
 		this.x = x;
 		this.y = y;
 	}
+	public void setType(String type){
+		this.type = type;
+	}
 	public void draw(Graphics g){
-		g.setColor(Color.BLACK);
+		if(type.equals("land"))
+			g.setColor(Color.GREEN);
+		else
+			g.setColor(Color.BLUE);
 		double sin30 = RADIUS * Math.sin(Math.PI/6);
 		double sin60 = RADIUS * Math.sin(Math.PI/3);
 		int[] ycoords = {(int)Math.round(y + RADIUS), (int)Math.round(sin30 + y), (int)Math.round(y - sin30), (int)Math.round(y - RADIUS), (int)Math.round(y - sin30), (int)Math.round(sin30 + y)};
 		int[] xcoords = {(int)Math.round(x), (int)Math.round(sin60 + x), (int)Math.round(sin60 + x), (int)Math.round(x), (int)Math.round(x - sin60), (int)Math.round(x - sin60)};
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 		
-		g.drawPolygon(p);
+		g.fillPolygon(p);
 	}
 	public void draw(Graphics g, int num){
 		g.setColor(Color.BLACK);
