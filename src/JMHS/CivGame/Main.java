@@ -4,8 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
@@ -19,6 +23,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	public static final double WIDTH = 1280;
 	public static final double HEIGHT = 720;
 	public static final double SCALE = Math.sqrt(3) / 2;
+	double sx = 0;
+	double sy = 0;
+	boolean dragging = false;
 
 	public static void main(String[] args) {
 
@@ -47,6 +54,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		setFocusable(true);
 		addKeyListener(this);
 		addMouseWheelListener(this);
+		addMouseMotionListener(mouse);
+		addMouseListener(m);
 		map = new HexMap(80, 52);
 		//map.GenerateMap(1);
 		start();
@@ -143,4 +152,61 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		if (e.getWheelRotation() < 0)
 			map.ZOOM += .0625;
 	}
+	MouseListener m =  new MouseListener() {
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			dragging = false;
+			
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			Point p = e.getPoint();
+			sx = p.x;
+			sy = p.y;
+			dragging =  true;
+			
+		}
+		
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			map.x = e.getX();
+			map.y = e.getY();
+			repaint();
+			
+		}
+	};
+	MouseMotionListener mouse = new MouseMotionListener() {
+		
+		
+		@Override
+		public void mouseMoved(MouseEvent arg0) {
+			//System.out.println(arg0.getX() + ", " + arg0.getY());
+			
+		}
+		
+		@Override
+		public void mouseDragged(MouseEvent m) {
+			Point p = m.getPoint();
+			map.x = sx - p.x;
+			map.y = sy- p.y;
+			if(dragging)
+			repaint();
+			
+		}
+	};
+
 }
