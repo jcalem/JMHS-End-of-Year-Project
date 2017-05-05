@@ -196,16 +196,15 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			Point a = m.getPoint();
 			double px2 = a.getX();
 			double py2 = a.getY();
-			map.x += px1 - px2/(4 * map.ZOOM);
+			map.x += (px1 - px2)/map.ZOOM;
 			if(map.y > 160 && (py1 - py2) < 0) {
-				map.y += py1 - py2;
+				map.y += (py1 - py2);
 			}
 			else if (map.y < 4865 && (py1 - py2) > 0) {
-				map.y += py1 - py2;
+				map.y += (py1 - py2)/map.ZOOM;
 			}
 			px1 = px2;
 			py1 = py2;
-			System.out.println("[" + m.getX() +", " + m.getY() + "]");
 		}
 	};
 
