@@ -23,8 +23,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	public static final double WIDTH = 1280;
 	public static final double HEIGHT = 720;
 	public static final double SCALE = Math.sqrt(3) / 2;
-	double sx = 0;
-	double sy = 0;
+	double px1;
+	double py1;
 	boolean dragging = false;
 
 	public static void main(String[] args) {
@@ -95,7 +95,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
+		//System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
 		if(map.x >= 2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM * WIDTH/2)){ 
 			map.x = map.ZOOM * WIDTH/2;
 		}
@@ -108,9 +108,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			map.x -= map.movingSpeed / map.ZOOM;
 		else if (movingRight)
 			map.x += map.movingSpeed / map.ZOOM;
-		else if (movingUp)
+		else if (movingUp && map.y > 160)
 			map.y -= map.movingSpeed / map.ZOOM;
-		else if (movingDown)
+		else if (movingDown && map.y < 4865)
 			map.y += map.movingSpeed / map.ZOOM;
 	}
 
@@ -147,26 +147,23 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (e.getWheelRotation() > 0)
+		if (e.getWheelRotation() > 0 && map.ZOOM > .1875)
 			map.ZOOM -= .0625;
-		if (e.getWheelRotation() < 0)
+		if (e.getWheelRotation() < 0 && map.ZOOM < 2)
 			map.ZOOM += .0625;
 	}
 	MouseListener m =  new MouseListener() {
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			dragging = false;
+			//dragging = false;
 			
 		}
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
-			/*Point p = e.getPoint();
-			sx = p.x;
-			sy = p.y;
-			dragging =  true;*/
-			
+			px1 = e.getPoint().getX();
+			py1 = e.getPoint().getY();
 		}
 		
 		@Override
@@ -177,30 +174,39 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
+
 			
 		}
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			Point p = e.getPoint();
-			map.x = p.x + map.x - (WIDTH / (map.ZOOM * 2));
-			map.y = p.y + map.y - (HEIGHT / (map.ZOOM * 2));
+
 		}
 	};
 	MouseMotionListener mouse = new MouseMotionListener() {
 		
 		
 		@Override
-		public void mouseMoved(MouseEvent arg0) {
-			//System.out.println(arg0.getX() + ", " + arg0.getY());
-			
+		public void mouseMoved(MouseEvent p) {
+
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent m) {
-			
+			Point a = m.getPoint();
+			double px2 = a.getX();
+			double py2 = a.getY();
+			map.x += px1 - px2/(4 * map.ZOOM);
+			if(map.y > 160 && (py1 - py2) < 0) {
+				map.y += py1 - py2;
+			}
+			else if (map.y < 4865 && (py1 - py2) > 0) {
+				map.y += py1 - py2;
+			}
+			px1 = px2;
+			py1 = py2;
+			System.out.println("[" + m.getX() +", " + m.getY() + "]");
 		}
 	};
 
-}
+	}
