@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class HexMap {
 
 	public HexTile[][] gameHexs;
-	public HashMap<Integer, HexTile> gameBoard = new HashMap<Integer, HexTile>();
+	public HexTile[][] gameBoard2;
 	double x = Main.WIDTH / 2;
 	double y = Main.HEIGHT / 2;
 	int MapSize = 0;
@@ -19,6 +19,7 @@ public class HexMap {
 	public HexMap(int numx, int numy) {
         int octaveCount = 5;
 		gameHexs = new HexTile[numx][numy];
+		gameBoard2 = new HexTile[numx][numy];
 		GenerateMap hexColors = new GenerateMap(gameHexs.length, gameHexs[0].length);
 		float[][] color = hexColors.GeneratePerlinNoise(gameHexs.length, gameHexs[0].length, octaveCount);
 		
@@ -33,63 +34,24 @@ public class HexMap {
 	}
 
 	public void draw(Graphics g){
-		MapSize = 0;
-		gameBoard.clear();
-		calculateRenderBox();
+		//apSize = 0;
+		//gameBoard.clear();
+		HexTile.RADIUS = (int) Math.round(HexTile.r * ZOOM);
+		//calculateRenderBox();
 		// System.out.println(gameBoard);
-		for (int i = 0; i < gameBoard.size(); i++) {
-			double boardx = ZOOM * (gameBoard.get(i).getX() - (x - (Main.WIDTH / (ZOOM * 2))));
-			double boardy = ZOOM * (gameBoard.get(i).getY() - (y - (Main.HEIGHT / (ZOOM * 2))));
+		for (int i = 0; i < gameHexs.length; i++) {
+			for(int j = 0; j < gameHexs[0].length; j++){
+			double boardx = ZOOM * (gameHexs[i][j].getX() - (x - (Main.WIDTH / (ZOOM * 2))));
+			double boardy = ZOOM * (gameHexs[i][j].getY() - (y - (Main.HEIGHT / (ZOOM * 2))));
 			if(boardx < -(Main.SCALE * HexTile.RADIUS))
 				boardx += 2 * gameHexs.length * HexTile.RADIUS * Main.SCALE;
 			if(boardx > Main.WIDTH + (Main.SCALE * HexTile.RADIUS))
 				boardx -= 2 * gameHexs.length * HexTile.RADIUS * Main.SCALE;
-			gameBoard.get(i).setCoords(boardx, boardy);
-			if(i == 0) gameBoard.get(i).draw(g, i);
-			else gameBoard.get(i).draw(g);
-			
-		}
-	}
-
-	public void calculateRenderBox() {
-		HexTile.RADIUS = (int) Math.round(HexTile.r * ZOOM);
-		for (int i = 0; i < gameHexs.length; i++) {
-			for (int j = 0; j < gameHexs[0].length; j++) {
-				HexTile current = gameHexs[i][j];
-				gameBoard.put(MapSize, gameHexs[i][j]);
-				MapSize++;
+			gameHexs[i][j].setCoords(boardx, boardy);
+			//gameBoard.get(i).setCoords(boardx, boardy);
+			if(i == 0) gameHexs[i][j].draw(g, i);
+			else gameHexs[i][j].draw(g);
 			}
 		}
 	}
-	
-	/*public void GenerateMap(int numIslands){
-		for(int i = 0; i < numIslands * 2 - 1; i += 2){
-			int centerx = (int)(Math.random() * gameHexs.length);
-			int centery = (int)(Math.random() * gameHexs[0].length);
-			GenerateContinent(centerx, centery);
-		}
-		
-	}
-	public void GenerateContinent(int centerx, int centery){
-		int hradius = (int)(Math.random() * gameHexs.length/3 + 5);
-		int vradius = (int)(Math.random() * gameHexs[0].length/3 + 5);
-		int left = centerx - hradius; 
-		int right = centerx + hradius;
-		System.out.println(left + " " + right + " " + centerx + " " + hradius);
-		if(left < 0) left += gameHexs.length;
-		if(right >= gameHexs.length) left = left % gameHexs.length;
-		int bottom = centery - vradius; 
-		int top = centery + vradius;
-		System.out.println(top + " " + bottom + " " + centery + " " + vradius);
-		if(bottom < 0) bottom = 0;
-		if(top >= gameHexs[0].length) top = gameHexs[0].length - 1;
-		System.out.println(left + " " + right + " " + centerx + " " + hradius);
-		System.out.println(top + " " + bottom + " " + centery + " " + vradius);
-		for(int i = left; i < right; i++){
-			for(int y = bottom; y < top; y++){
-				if(i >= gameHexs.length) i = 0;
-				gameHexs[i][y].setType("land");
-			}
-		}
-	}*/
 }

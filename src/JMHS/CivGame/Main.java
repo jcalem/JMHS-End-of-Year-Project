@@ -162,10 +162,10 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
-			Point p = e.getPoint();
+			/*Point p = e.getPoint();
 			sx = p.x;
 			sy = p.y;
-			dragging =  true;
+			dragging =  true;*/
 			
 		}
 		
@@ -183,10 +183,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			map.x = e.getX();
-			map.y = e.getY();
-			repaint();
-			
+			Point p = e.getPoint();
+			map.x = p.x + map.x - (WIDTH / (map.ZOOM * 2));
+			map.y = p.y + map.y - (HEIGHT / (map.ZOOM * 2));
 		}
 	};
 	MouseMotionListener mouse = new MouseMotionListener() {
@@ -200,11 +199,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		
 		@Override
 		public void mouseDragged(MouseEvent m) {
-			Point p = m.getPoint();
-			map.x = sx - p.x;
-			map.y = sy- p.y;
-			if(dragging)
-			repaint();
 			
 		}
 	};
