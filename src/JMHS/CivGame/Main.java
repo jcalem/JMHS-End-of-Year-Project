@@ -99,6 +99,10 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		if(map.x >= 2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM * WIDTH/2)){ 
 			map.x = map.ZOOM * WIDTH/2;
 		}
+		
+		if(map.x < 0){
+			map.x = 2 * HexTile.r * map.gameHexs.length * SCALE;
+		}
 		/*if(map.x <= -2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM * WIDTH/2)){ 
 			map.x = -1 * map.ZOOM * WIDTH/2;
 		}*/
