@@ -57,7 +57,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		addMouseMotionListener(mouse);
 		addMouseListener(m);
 		map = new HexMap(80, 52);
-		//map.GenerateMap(1);
 		start();
 	}
 

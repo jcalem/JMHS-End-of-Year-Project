@@ -14,11 +14,14 @@ public class HexTile {
 	private double mapy;
 	private String type;
 	private float color;
+	private float moisture;
 	
-	public HexTile(double mapx, double mapy, float color){
+	
+	public HexTile(double mapx, double mapy, float color, float moisture){
 		this.mapx = mapx;
 		this.mapy = mapy;
 		this.color = color;
+		this.moisture = moisture;
 		type = getType();
 	}
 	public double getX(){
@@ -31,22 +34,22 @@ public class HexTile {
 		this.x = x;
 		this.y = y;
 	}
-	public void setType(String type){
-		this.type = type;
-	}
 	public String getType(){
 		if(color <= .55) return "sea";
-		if(color > .85) return "mountain";
-		//if(color > .75) return "hill";
+		else return "land";
+	}
+	public String getLandType(){
+		if(moisture < .3) return "desert";
+		if(moisture > .83) return "mountain";
 		else return "land";
 	}
 	public void draw(Graphics g){
-		if(type.equals("land"))
+		if(this.type.equals("land"))
 			g.setColor(Color.GREEN);
-		else if(type.equals("mountain"))
+		else if(this.type.equals("mountain"))
 			g.setColor(Color.GRAY);
-		else if(type.equals("hill"))
-			g.setColor(Color.MAGENTA);
+		else if(this.type.equals("desert"))
+			g.setColor(Color.YELLOW);
 		else
 			g.setColor(Color.BLUE);
 		double sin30 = RADIUS * Math.sin(Math.PI/6);
