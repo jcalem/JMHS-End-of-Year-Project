@@ -1,11 +1,12 @@
 package JMHS.CivGame;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class HexMap {
 
-	public HexTile[][] gameHexs;
+	public static HexTile[][] gameHexs;
 	public HexTile[][] gameBoard2;
 	double x = Main.WIDTH / 2;
 	double y = Main.HEIGHT / 2;
@@ -32,7 +33,9 @@ public class HexMap {
 					j * HexTile.RADIUS * Main.SCALE + (2 * starty * i) + starty,
 					startx + j * (HexTile.RADIUS + HexTile.RADIUS * Math.sin(Math.PI / 6)), 
 					color[i][j],
-					moisture[i][j]);
+					moisture[i][j],
+					i,
+					j);
 			}
 		}
 	}
@@ -51,5 +54,39 @@ public class HexMap {
 			gameHexs[i][j].draw(g);
 			}
 		}
+	}
+	public static void getAdjacient(int x, int y, ArrayList<HexTile> tiles){
+		int xleft = 0, xright = 0, ytop = 0, ybottom = 0;
+		/*if(x - 1 < 0) xleft = gameHexs.length - 1;
+		if(x + 1 >= gameHexs.length) xright = 0;
+		if(y - 1 < 0) ytop = 0;
+		if(y + 1 >= gameHexs.length) ybottom = gameHexs[0].length - 1;*/
+		
+		if(!tiles.contains(gameHexs[x][y]))
+			tiles.add(gameHexs[x][y]);
+		if(!tiles.contains(gameHexs[x][y - 1]))
+			tiles.add(gameHexs[x][y - 1]);
+		if(!tiles.contains(gameHexs[x + 1][y - 1]))
+			tiles.add(gameHexs[x + 1][y - 1]);
+		if(!tiles.contains(gameHexs[x + 1][y]))
+			tiles.add(gameHexs[x + 1][y]);
+		if(!tiles.contains(gameHexs[x - 1][y]))
+			tiles.add(gameHexs[x - 1][y]);
+		if(!tiles.contains(gameHexs[x - 1][y + 1]))
+			tiles.add(gameHexs[x - 1][y + 1]);
+		if(!tiles.contains(gameHexs[x][y + 1]))
+			tiles.add(gameHexs[x][y + 1]);
+	}
+	public static ArrayList<HexTile> getSurroundingTiles(int x, int y, int radius){
+		ArrayList<HexTile> tiles = new ArrayList<HexTile>();
+		tiles.add(gameHexs[x][y]);
+		getAdjacient(tiles.get(0).i, tiles.get(0).j, tiles);
+		for(int i = 1; i < radius; i++){
+			int size = tiles.size();
+			for(int j = 1; j < size; j++){
+				getAdjacient(tiles.get(j).i, tiles.get(j).j, tiles);
+			}
+		}
+		return tiles;
 	}
 }

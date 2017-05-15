@@ -47,7 +47,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	private boolean movingUp = false;
 	private boolean movingDown = false;
 
-	HexMap map;
+	public HexMap map;
+	public static City test;
 
 	public Main() {
 
@@ -57,6 +58,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		addMouseMotionListener(mouse);
 		addMouseListener(m);
 		map = new HexMap(80, 52);
+		test = new City(2, 2);
 		start();
 	}
 

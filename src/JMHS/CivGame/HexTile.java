@@ -10,6 +10,8 @@ public class HexTile {
 	public static double RADIUS = r;
 	private double x;
 	private double y;
+	int i;
+	int j;
 	private double mapx;
 	private double mapy;
 	private String type;
@@ -17,7 +19,9 @@ public class HexTile {
 	private float moisture;
 	
 	
-	public HexTile(double mapx, double mapy, float color, float moisture){
+	public HexTile(double mapx, double mapy, float color, float moisture, int i, int j){
+		this.i = i;
+		this.j = j;
 		this.mapx = mapx;
 		this.mapy = mapy;
 		this.color = color;
@@ -52,6 +56,9 @@ public class HexTile {
 			g.setColor(Color.YELLOW);
 		else
 			g.setColor(Color.BLUE);
+		
+		if(Main.test.area.contains(this))
+			g.setColor(Color.RED);
 		double sin30 = RADIUS * Math.sin(Math.PI/6);
 		double sin60 = RADIUS * Math.sin(Math.PI/3);
 		int[] ycoords = {(int)Math.round(y + RADIUS), (int)Math.round(sin30 + y), (int)Math.round(y - sin30), (int)Math.round(y - RADIUS), (int)Math.round(y - sin30), (int)Math.round(sin30 + y)};

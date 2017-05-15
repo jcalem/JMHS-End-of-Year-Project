@@ -7,13 +7,9 @@ public class City {
 	int locx, locy;
 	ArrayList<HexTile> area;
 	public City(int locx, int locy){
-		area = getSurroundingTiles(locx, locy, 1);
-	}
-	public ArrayList<HexTile> getSurroundingTiles(int x, int y, int radius){
-		ArrayList<HexTile> tiles = new ArrayList<HexTile>();
-		for(int i = 0; i < radius; i++){
-			
-		}
-		return tiles;
+		this.locx = locx;
+		this.locy = locy;
+		//System.out.println(this.locx + " " + this.locy);
+		area = HexMap.getSurroundingTiles(this.locx, this.locy, 2);
 	}
 }
