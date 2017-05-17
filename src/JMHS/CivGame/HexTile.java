@@ -98,8 +98,11 @@ public class HexTile {
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 		// g.setColor(new Color(color, color, color));
 		g.fillPolygon(p);
-		g.setColor(Color.BLACK);
-		g.drawPolygon(p);
+		if(Main.grid){
+			g.setColor(Color.BLACK);
+			g.drawPolygon(p);
+		}
+		
 	}
 
 	public void draw(Graphics g, int num) {

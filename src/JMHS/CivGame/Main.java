@@ -27,6 +27,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	double px1;
 	double py1;
 	boolean dragging = false;
+	public static boolean grid = false;
 
 	public static void main(String[] args) {
 
@@ -143,6 +144,10 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			movingUp = true;
 		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
 			movingDown = true;
+		else if(e.getKeyCode() == KeyEvent.VK_G){
+			if(grid) grid = false;
+			else grid = true;
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
