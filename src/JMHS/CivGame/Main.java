@@ -157,9 +157,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (e.getWheelRotation() > 0) // && map.ZOOM > .1875)
+		if (e.getWheelRotation() > 0 && map.ZOOM > .1875)
 			map.ZOOM -= .0625;
-		if (e.getWheelRotation() < 0) // && map.ZOOM < 2)
+		if (e.getWheelRotation() < 0 && map.ZOOM < 2)
 			map.ZOOM += .0625;
 	}
 
