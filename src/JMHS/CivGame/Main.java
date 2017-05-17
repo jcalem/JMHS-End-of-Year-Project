@@ -13,6 +13,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame();
-		frame.setSize((int)WIDTH, (int)HEIGHT);
+		frame.setSize((int) WIDTH, (int) HEIGHT);
 		frame.setResizable(false);
 		frame.setLayout(new BorderLayout());
 		frame.add(new Main(), BorderLayout.CENTER);
@@ -49,6 +50,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 	public HexMap map;
 	public static Civilization playerCiv;
+	public static ArrayList<Civilization> civs;
 
 	public Main() {
 
@@ -59,6 +61,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		addMouseListener(m);
 		map = new HexMap(80, 52);
 		playerCiv = new Civilization();
+		civs = new ArrayList<Civilization>();
+		civs.add(playerCiv);
 		start();
 	}
 
@@ -90,25 +94,25 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	private void tick() {
-		/*try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		//System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
-		if(map.x >= 2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM * WIDTH/2)){ 
-			map.x = map.ZOOM * WIDTH/2;
+		/*
+		 * try { Thread.sleep(100); } catch (InterruptedException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
+		// System.out.println(map.x + "," + map.y + " " + HexTile.RADIUS);
+		if (map.x >= 2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM * WIDTH / 2)) {
+			map.x = map.ZOOM * WIDTH / 2;
 		}
-		
-		if(map.x < 0){
+
+		if (map.x < 0) {
 			map.x = 2 * HexTile.r * map.gameHexs.length * SCALE;
 		}
-		/*if(map.x <= -2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM * WIDTH/2)){ 
-			map.x = -1 * map.ZOOM * WIDTH/2;
-		}*/
-		//System.out.println(2 * map.gameHexs.length * map.gameHexs[0][0].RADIUS * Main.SCALE + );
-		
+		/*
+		 * if(map.x <= -2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM
+		 * * WIDTH/2)){ map.x = -1 * map.ZOOM * WIDTH/2; }
+		 */
+		// System.out.println(2 * map.gameHexs.length *
+		// map.gameHexs[0][0].RADIUS * Main.SCALE + );
+
 		if (movingLeft)
 			map.x -= map.movingSpeed / map.ZOOM;
 		else if (movingRight)
@@ -121,7 +125,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, (int)WIDTH, (int)HEIGHT);
+		g.fillRect(0, 0, (int) WIDTH, (int) HEIGHT);
 		g.setColor(Color.BLACK);
 		map.draw(g);
 		playerCiv.draw(g);
@@ -153,65 +157,70 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (e.getWheelRotation() > 0) //&& map.ZOOM > .1875)
+		if (e.getWheelRotation() > 0) // && map.ZOOM > .1875)
 			map.ZOOM -= .0625;
-		if (e.getWheelRotation() < 0) //&& map.ZOOM < 2)
+		if (e.getWheelRotation() < 0) // && map.ZOOM < 2)
 			map.ZOOM += .0625;
 	}
-	MouseListener m =  new MouseListener() {
-		
+
+	MouseListener m = new MouseListener() {
+
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			//dragging = false;
-			
+			// dragging = false;
+
 		}
-		
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			px1 = e.getPoint().getX();
 			py1 = e.getPoint().getY();
 		}
-		
+
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 		@Override
 		public void mouseEntered(MouseEvent e) {
 
-			
 		}
-		
+
 		@Override
 		public void mouseClicked(MouseEvent e) {
-
+			for (int i = 0; i < map.gameHexs.length; i++) {
+				for (int j = 0; j < map.gameHexs[0].length; j++) {
+					if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(), (int) e.getPoint().getY())) {
+						if (map.gameHexs[i][j].hasUnit())
+							System.out.println("1");
+					}
+				}
+			}
 		}
 	};
 	MouseMotionListener mouse = new MouseMotionListener() {
-		
-		
+
 		@Override
 		public void mouseMoved(MouseEvent p) {
 
 		}
-		
+
 		@Override
 		public void mouseDragged(MouseEvent m) {
 			Point a = m.getPoint();
 			double px2 = a.getX();
 			double py2 = a.getY();
-			map.x += (px1 - px2)/map.ZOOM;
-			if(map.y > 160 && (py1 - py2) < 0) {
-				map.y += (py1 - py2)/map.ZOOM;
-			}
-			else if (map.y < 4865 && (py1 - py2) > 0) {
-				map.y += (py1 - py2)/map.ZOOM;
+			map.x += (px1 - px2) / map.ZOOM;
+			if (map.y > 160 && (py1 - py2) < 0) {
+				map.y += (py1 - py2) / map.ZOOM;
+			} else if (map.y < 4865 && (py1 - py2) > 0) {
+				map.y += (py1 - py2) / map.ZOOM;
 			}
 			px1 = px2;
 			py1 = py2;
 		}
 	};
 
-	}
+}
