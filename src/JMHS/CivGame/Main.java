@@ -48,7 +48,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	private boolean movingDown = false;
 
 	public HexMap map;
-	public static City test;
+	public static Civilization playerCiv;
 
 	public Main() {
 
@@ -58,7 +58,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		addMouseMotionListener(mouse);
 		addMouseListener(m);
 		map = new HexMap(80, 52);
-		test = new City(2, 2);
+		playerCiv = new Civilization();
 		start();
 	}
 
@@ -124,6 +124,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		g.fillRect(0, 0, (int)WIDTH, (int)HEIGHT);
 		g.setColor(Color.BLACK);
 		map.draw(g);
+		playerCiv.draw(g);
 	}
 
 	public void keyTyped(KeyEvent e) {

@@ -56,13 +56,15 @@ public class HexMap {
 		}
 	}
 	public static void getAdjacient(int x, int y, ArrayList<HexTile> tiles){
-		int xleft = 0, xright = 0, ytop = 0, ybottom = 0;
-		/*if(x - 1 < 0) xleft = gameHexs.length - 1;
+		int xleft = x - 1, xright = x + 1, ytop = y - 1, ybottom = y + 1;
+		if(x - 1 < 0) xleft = gameHexs.length - 1;
 		if(x + 1 >= gameHexs.length) xright = 0;
 		if(y - 1 < 0) ytop = 0;
-		if(y + 1 >= gameHexs.length) ybottom = gameHexs[0].length - 1;*/
+		if(y + 1 >= gameHexs.length) ybottom = gameHexs[0].length - 1;
+		System.out.println(xleft + " " + xright);
+		System.out.println(ytop + " " + ybottom);
 		
-		if(!tiles.contains(gameHexs[x][y]))
+		/*if(!tiles.contains(gameHexs[x][y]))
 			tiles.add(gameHexs[x][y]);
 		if(!tiles.contains(gameHexs[x][y - 1]))
 			tiles.add(gameHexs[x][y - 1]);
@@ -75,7 +77,22 @@ public class HexMap {
 		if(!tiles.contains(gameHexs[x - 1][y + 1]))
 			tiles.add(gameHexs[x - 1][y + 1]);
 		if(!tiles.contains(gameHexs[x][y + 1]))
-			tiles.add(gameHexs[x][y + 1]);
+			tiles.add(gameHexs[x][y + 1]);*/
+		
+		if(!tiles.contains(gameHexs[x][y]))
+			tiles.add(gameHexs[x][y]);
+		if(!tiles.contains(gameHexs[x][ytop]))
+			tiles.add(gameHexs[x][ytop]);
+		if(!tiles.contains(gameHexs[xright][ytop]))
+			tiles.add(gameHexs[xright][ytop]);
+		if(!tiles.contains(gameHexs[xright][y]))
+			tiles.add(gameHexs[xright][y]);
+		if(!tiles.contains(gameHexs[xleft][y]))
+			tiles.add(gameHexs[xleft][y]);
+		if(!tiles.contains(gameHexs[xleft][ybottom]))
+			tiles.add(gameHexs[xleft][ybottom]);
+		if(!tiles.contains(gameHexs[x][ybottom]))
+			tiles.add(gameHexs[x][ybottom]);
 	}
 	public static ArrayList<HexTile> getSurroundingTiles(int x, int y, int radius){
 		ArrayList<HexTile> tiles = new ArrayList<HexTile>();

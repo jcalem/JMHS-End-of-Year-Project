@@ -8,8 +8,8 @@ public class HexTile {
 	
 	public static final int r = 64;
 	public static double RADIUS = r;
-	private double x;
-	private double y;
+	public double x;
+	public double y;
 	int i;
 	int j;
 	private double mapx;
@@ -38,6 +38,12 @@ public class HexTile {
 		this.x = x;
 		this.y = y;
 	}
+	public double getBoardX(){
+		return x;
+	}
+	public double getBoardY(){
+		return y;
+	}
 	public String getType(){
 		if(color <= .55) return "sea";
 		else return "land";
@@ -56,9 +62,15 @@ public class HexTile {
 			g.setColor(Color.YELLOW);
 		else
 			g.setColor(Color.BLUE);
-		
-		if(Main.test.area.contains(this))
-			g.setColor(Color.RED);
+		double tint_factor = .5;
+		if(Main.playerCiv.hasCity()){
+			if(Main.playerCiv.getCity(0).area.contains(this)){
+				int newR = (int)(g.getColor().getRed() + (255 - g.getColor().getRed())/* tint_factor*/);
+				int newG = g.getColor().getGreen();//(int)(g.getColor().getGreen() + (255 - g.getColor().getGreen()) * tint_factor);
+				int newB = g.getColor().getBlue();//(int)(g.getColor().getBlue() + (255 - g.getColor().getBlue()) * tint_factor);
+				g.setColor(new Color(newR, newG, newB));
+		}
+		}
 		double sin30 = RADIUS * Math.sin(Math.PI/6);
 		double sin60 = RADIUS * Math.sin(Math.PI/3);
 		int[] ycoords = {(int)Math.round(y + RADIUS), (int)Math.round(sin30 + y), (int)Math.round(y - sin30), (int)Math.round(y - RADIUS), (int)Math.round(y - sin30), (int)Math.round(sin30 + y)};
