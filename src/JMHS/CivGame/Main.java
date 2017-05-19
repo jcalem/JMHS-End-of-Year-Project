@@ -28,7 +28,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	double py1;
 	boolean dragging = false;
 	public static boolean grid = false;
-
+	static JPanel jpanel;
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame();
@@ -57,7 +57,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	ArrayList<HexTile> availableTiles;
 
 	public Main() {
-
 		setFocusable(true);
 		addKeyListener(this);
 		addMouseWheelListener(this);
@@ -83,7 +82,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		while (isRunning) {
 			start = System.nanoTime();
 			repaint();
-
+			//jpanel.repaint();
 			elapsed = System.nanoTime() - start;
 			wait = (200 / 6) - elapsed / 1000000;
 			if (wait <= 0)
@@ -133,6 +132,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		g.setColor(Color.BLACK);
 		map.draw(g);
 		playerCiv.draw(g);
+		//jpanel.repaint();
 	}
 
 	public void keyTyped(KeyEvent e) {

@@ -2,7 +2,10 @@ package JMHS.CivGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Polygon;
+
+import javax.swing.ImageIcon;
 
 public class HexTile {
 
@@ -112,7 +115,8 @@ public class HexTile {
 	}
 
 	public void draw(Graphics g, int num) {
-		g.setColor(Color.BLACK);
+		double sin60 = RADIUS * Math.sin(Math.PI / 3);
+		/*g.setColor(Color.BLACK);
 		double sin30 = RADIUS * Math.sin(Math.PI / 6);
 		double sin60 = RADIUS * Math.sin(Math.PI / 3);
 		int[] ycoords = { (int) Math.round(y + RADIUS), (int) Math.round(sin30 + y), (int) Math.round(y - sin30),
@@ -121,7 +125,9 @@ public class HexTile {
 				(int) Math.round(x), (int) Math.round(x - sin60), (int) Math.round(x - sin60) };
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 
-		g.fillPolygon(p);
+		g.fillPolygon(p);*/
+		Image img = new ImageIcon("babysach.jpg").getImage();
+		g.drawImage(img, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
 	}
 
 	public Polygon getShape() {

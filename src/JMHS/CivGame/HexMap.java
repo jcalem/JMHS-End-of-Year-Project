@@ -47,7 +47,8 @@ public class HexMap {
 				if (boardx > Main.WIDTH + (Main.SCALE * HexTile.RADIUS))
 					boardx -= 2 * gameHexs.length * HexTile.RADIUS * Main.SCALE;
 				gameHexs[i][j].setCoords(boardx, boardy);
-				gameHexs[i][j].draw(g);
+				if(i % gameHexs.length == 0) gameHexs[i][j].draw(g, 1);
+				else gameHexs[i][j].draw(g);
 			}
 		}
 	}
