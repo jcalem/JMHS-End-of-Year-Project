@@ -15,7 +15,7 @@ public class Civilization {
 			locy = (int) (Math.random() * HexMap.gameHexs[0].length);
 		} while (!HexMap.gameHexs[locx][locy].getType().equals("land"));
 		newUnit(locx, locy, "Settler");
-		newUnit(locx, locy, "Warrior");
+		//newUnit(locx, locy, "Warrior");
 	}
 
 	public void newUnit(int locx, int locy, String type) {

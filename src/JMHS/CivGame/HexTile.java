@@ -14,9 +14,10 @@ public class HexTile {
 	int j;
 	private double mapx;
 	private double mapy;
-	private String type;
+	public String type;
 	private float color;
 	private float moisture;
+	Color c;
 
 	public HexTile(double mapx, double mapy, float color, float moisture, int i, int j) {
 		this.i = i;
@@ -26,8 +27,18 @@ public class HexTile {
 		this.color = color;
 		this.moisture = moisture;
 		type = getType();
+		if (this.type.equals("land"))
+			setColor(new Color(1, 255, 1));
+		else if (this.type.equals("mountain"))
+			setColor(Color.GRAY);
+		else if (this.type.equals("desert"))
+			setColor(Color.YELLOW);
+		else
+			setColor(new Color(1, 1, 255));
 	}
-
+	public void setColor(Color c){
+		this.c = c;
+	}
 	public double getX() {
 		return this.mapx;
 	}
@@ -64,16 +75,11 @@ public class HexTile {
 		else
 			return "land";
 	}
-
+	public Color getColor(){
+		return c;
+	}
 	public void draw(Graphics g) {
-		if (this.type.equals("land"))
-			g.setColor(Color.GREEN);
-		else if (this.type.equals("mountain"))
-			g.setColor(Color.GRAY);
-		else if (this.type.equals("desert"))
-			g.setColor(Color.YELLOW);
-		else
-			g.setColor(Color.BLUE);
+		g.setColor(c);
 		double tint_factor = .5;
 		if (Main.playerCiv.hasCity()) {
 			if (Main.playerCiv.getCity(0).area.contains(this)) {
@@ -147,5 +153,14 @@ public class HexTile {
 			}
 		}
 		return false;
+	}
+	public Unit getUnit(){
+		for (Civilization civ : Main.civs) {
+			for (Unit unit : civ.units) {
+				if (unit.locx == this.i && unit.locy == this.j)
+					return unit;
+			}
+		}
+		return null;
 	}
 }

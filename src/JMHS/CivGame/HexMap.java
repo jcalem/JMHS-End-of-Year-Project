@@ -62,8 +62,6 @@ public class HexMap {
 			ytop = 0;
 		if (y + 1 >= gameHexs.length)
 			ybottom = gameHexs[0].length - 1;
-		System.out.println(xleft + " " + xright);
-		System.out.println(ytop + " " + ybottom);
 
 		/*
 		 * if(!tiles.contains(gameHexs[x][y])) tiles.add(gameHexs[x][y]);

@@ -52,6 +52,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	public HexMap map;
 	public static Civilization playerCiv;
 	public static ArrayList<Civilization> civs;
+	Object selected;
+	boolean isSelected = false;
+	ArrayList<HexTile> availableTiles;
 
 	public Main() {
 
@@ -144,9 +147,11 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			movingUp = true;
 		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
 			movingDown = true;
-		else if(e.getKeyCode() == KeyEvent.VK_G){
-			if(grid) grid = false;
-			else grid = true;
+		else if (e.getKeyCode() == KeyEvent.VK_G) {
+			if (grid)
+				grid = false;
+			else
+				grid = true;
 		}
 	}
 
@@ -198,8 +203,37 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			for (int i = 0; i < map.gameHexs.length; i++) {
 				for (int j = 0; j < map.gameHexs[0].length; j++) {
 					if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(), (int) e.getPoint().getY())) {
-						if (map.gameHexs[i][j].hasUnit())
-							System.out.println("1");
+						if (map.gameHexs[i][j].hasUnit()) {
+							isSelected = true;
+							selected = map.gameHexs[i][j].getUnit();
+							availableTiles = HexMap.getSurroundingTiles(i, j, ((Unit) selected).movingSpeed);
+							for (HexTile tile : availableTiles) {
+								Color c = new Color((int) Math.round((tile.getColor().getRed() + 255) / 2),
+										(int) Math.round((tile.getColor().getGreen()) / 2),
+										(int) Math.round(tile.getColor().getBlue()));
+
+								tile.setColor(c);
+							}
+						} else if (e.getButton() == e.BUTTON3 && isSelected
+								&& availableTiles.contains(map.gameHexs[i][j])) {
+							((Unit) selected).move(i, j);
+							isSelected = false;
+							selected = null;
+							for (HexTile tile : availableTiles) {
+								Color c;
+								if (tile.type.equals("land"))
+									c = Color.GREEN;
+								else if (tile.type.equals("mountain"))
+									c = Color.GRAY;
+								else if (tile.type.equals("desert"))
+									c = Color.YELLOW;
+								else
+									c = Color.BLUE;
+								tile.setColor(c);
+							}
+							availableTiles.clear();
+
+						}
 					}
 				}
 			}

@@ -10,6 +10,5 @@ public class Settler extends Unit {
 	public void createCity() {
 		City newCity = new City(locx, locy);
 		civ.addCity(newCity);
-
 	}
 }
