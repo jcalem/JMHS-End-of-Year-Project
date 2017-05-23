@@ -21,6 +21,7 @@ public class HexTile {
 	private float color;
 	private float moisture;
 	Color c;
+	Graphics g;
 
 	public HexTile(double mapx, double mapy, float color, float moisture, int i, int j) {
 		this.i = i;
@@ -36,8 +37,10 @@ public class HexTile {
 			setColor(Color.GRAY);
 		else if (this.type.equals("desert"))
 			setColor(Color.YELLOW);
-		else
+		else{
 			setColor(new Color(1, 1, 255));
+		}
+			
 	}
 	public void setColor(Color c){
 		this.c = c;
@@ -106,11 +109,19 @@ public class HexTile {
 				(int) Math.round(x), (int) Math.round(x - sin60), (int) Math.round(x - sin60) };
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 		// g.setColor(new Color(color, color, color));
+		
 		g.fillPolygon(p);
+		if(getType().equals("sea"))
+			draw(g,1);
+		
+
 		if(Main.grid){
 			g.setColor(Color.BLACK);
 			g.drawPolygon(p);
+			
+			
 		}
+		
 		
 	}
 
@@ -126,7 +137,9 @@ public class HexTile {
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 
 		g.fillPolygon(p);*/
-		Image img = new ImageIcon("babysach.jpg").getImage();
+		Image img = new ImageIcon("sea.gif").getImage();
+		//g.setClip(getShape());
+		//g.drawImage(img, 0, 0, null);
 		g.drawImage(img, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
 	}
 

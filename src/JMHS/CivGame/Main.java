@@ -3,7 +3,10 @@ package JMHS.CivGame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Panel;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -28,13 +31,15 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	double py1;
 	boolean dragging = false;
 	public static boolean grid = false;
-	static JPanel jpanel;
+	static JPanel jpanel = new JPanel();
+	static boolean framer = false;
+	static Container pane = new Container();
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame();
 		frame.setSize((int) WIDTH, (int) HEIGHT);
 		frame.setResizable(false);
-		frame.setLayout(new BorderLayout());
+		//frame.setLayout(null);
 		frame.add(new Main(), BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle(title);
@@ -66,6 +71,10 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		playerCiv = new Civilization();
 		civs = new ArrayList<Civilization>();
 		civs.add(playerCiv);
+		jpanel.setPreferredSize(new Dimension(500, 500));
+		jpanel.setLocation(new Point(0, 0));
+		jpanel.setVisible(false);
+		this.add(jpanel);
 		start();
 	}
 
@@ -145,8 +154,11 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			movingLeft = true;
 		else if (e.getKeyCode() == KeyEvent.VK_UP)
 			movingUp = true;
-		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+		else if (e.getKeyCode() == KeyEvent.VK_DOWN){
 			movingDown = true;
+			toggleSettings();
+		}
+			
 		else if (e.getKeyCode() == KeyEvent.VK_G) {
 			if (grid)
 				grid = false;
@@ -261,5 +273,15 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			py1 = py2;
 		}
 	};
+	public void toggleSettings(){
+		if(framer){
+			jpanel.setVisible(true);
+			framer = false;
+		}
+		else{
+			jpanel.setVisible(false);
+			framer = true;
+		}
+	}
 
 }
