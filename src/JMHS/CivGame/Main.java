@@ -1,25 +1,9 @@
 package JMHS.CivGame;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Panel;
-import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.awt.image.BufferStrategy;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Main extends JPanel implements Runnable, KeyListener, MouseWheelListener {
 
@@ -34,12 +18,14 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	static JPanel jpanel = new JPanel();
 	static boolean framer = false;
 	static Container pane = new Container();
+	static JFrame frame;
+	static int gold, culture, science;
+	static int GPT, CPT, SPT;
+	static boolean displayingMap, displayingTechTree, displayingVictoryProgress;
 	public static void main(String[] args) {
-
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		frame.setSize((int) WIDTH, (int) HEIGHT);
 		frame.setResizable(false);
-		//frame.setLayout(null);
 		frame.add(new Main(), BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle(title);
@@ -68,13 +54,64 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		addMouseMotionListener(mouse);
 		addMouseListener(m);
 		map = new HexMap(80, 52);
+		displayingMap = true;
 		playerCiv = new Civilization();
 		civs = new ArrayList<Civilization>();
 		civs.add(playerCiv);
-		jpanel.setPreferredSize(new Dimension(500, 500));
-		jpanel.setLocation(new Point(0, 0));
+		frame.add(jpanel, BorderLayout.EAST);
+		jpanel.setPreferredSize(new Dimension(150, 720));
 		jpanel.setVisible(false);
-		this.add(jpanel);
+		
+		gold = science = culture = 0;
+		GPT = CPT = SPT = 0;
+		
+		JMenuItem goldDisplay = new JMenuItem("Gold: " + gold + " (+" + GPT +")");
+		JMenuItem cultureDisplay = new JMenuItem("Culture: " + culture + " (+" + CPT +")");
+		JMenuItem scienceDisplay = new JMenuItem("Science:" + science + " (+" + SPT +")");
+		
+		goldDisplay.setEnabled(false);
+		cultureDisplay.setEnabled(false);
+		scienceDisplay.setEnabled(false);
+		
+		JMenuItem map = new JMenuItem("World Map");
+		JMenuItem techTree = new JMenuItem("Tech Tree");
+		//JMenuItem diplomacy = new JMenuItem("Diplomacy Overview");
+		JMenuItem victoryProgress = new JMenuItem("Victory Progress");
+		
+		/*
+		JMenuItem save = new JMenuItem("Save");
+		JMenuItem open = new JMenuItem("Open");
+		JMenuItem newGame = new JMenuItem("New Game");
+		*/
+
+		JMenu displayMenu = new JMenu("Display");
+		displayMenu.add(map);
+		displayMenu.add(techTree);
+		//displayMenu.add(diplomacy);
+		displayMenu.add(victoryProgress);
+		
+		/*
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.add(newGame);
+		fileMenu.add(save);
+		fileMenu.add(open);
+		*/
+		
+		JMenuBar bar = new JMenuBar();
+		//bar.add(fileMenu);
+		
+		bar.add(goldDisplay);
+		bar.add(cultureDisplay);
+		bar.add(scienceDisplay);
+		
+		bar.add(displayMenu);
+		frame.add(bar, BorderLayout.NORTH);
+		
+		map.addActionListener(new DisplayMapListener());
+		techTree.addActionListener(new DisplayTechTreeListener());
+		victoryProgress.addActionListener(new DisplayVictoryProgressListener());
+		//diplomacy.addActionListener(new DisplayDiplomacyListener());
+		
 		start();
 	}
 
@@ -139,15 +176,18 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, (int) WIDTH, (int) HEIGHT);
 		g.setColor(Color.BLACK);
-		map.draw(g);
-		playerCiv.draw(g);
+		if(displayingMap)
+		{
+			map.draw(g);
+			playerCiv.draw(g);
+		}
 		//jpanel.repaint();
 	}
 
 	public void keyTyped(KeyEvent e) {
 	}
 
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) {//should only work when displayingMap
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 			movingRight = true;
 		else if (e.getKeyCode() == KeyEvent.VK_LEFT)
@@ -159,7 +199,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			toggleSettings();
 		}
 			
-		else if (e.getKeyCode() == KeyEvent.VK_G) {
+		else if (e.getKeyCode() == KeyEvent.VK_G) {//should only work when displayingMap
 			if (grid)
 				grid = false;
 			else
@@ -167,7 +207,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		}
 	}
 
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(KeyEvent e) { //should only work when displayingMap
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 			movingRight = false;
 		else if (e.getKeyCode() == KeyEvent.VK_LEFT)
@@ -178,7 +218,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			movingDown = false;
 	}
 
-	public void mouseWheelMoved(MouseWheelEvent e) {
+	public void mouseWheelMoved(MouseWheelEvent e) {//should only work when displayingMap
 		if (e.getWheelRotation() > 0 && map.ZOOM > .1875)
 			map.ZOOM -= .0625;
 		if (e.getWheelRotation() < 0 && map.ZOOM < 2)
@@ -211,7 +251,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) { //should only work when displayingMap
 			for (int i = 0; i < map.gameHexs.length; i++) {
 				for (int j = 0; j < map.gameHexs[0].length; j++) {
 					if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(), (int) e.getPoint().getY())) {
@@ -281,6 +321,24 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		else{
 			jpanel.setVisible(false);
 			framer = true;
+		}
+	}
+	private class DisplayTechTreeListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			System.out.print("Display Tech Tree");
+			displayingMap = false;
+		}
+	}
+	private class DisplayMapListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			System.out.print("Display Map");
+			displayingMap = true;
+		}
+	}
+	private class DisplayVictoryProgressListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			System.out.print("Display Victory Progress");
+			displayingMap = false;
 		}
 	}
 
