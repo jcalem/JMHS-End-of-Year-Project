@@ -19,9 +19,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	static boolean framer = false;
 	static Container pane = new Container();
 	static JFrame frame;
-	static int gold, culture, science;
-	static int GPT, CPT, SPT;
-	static boolean displayingMap, displayingTechTree, displayingVictoryProgress;
 	public static void main(String[] args) {
 		frame = new JFrame();
 		frame.setSize((int) WIDTH, (int) HEIGHT);
@@ -40,7 +37,10 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	private boolean movingUp = false;
 	private boolean movingDown = false;
 
-	public HexMap map;
+	public static HexMap map;
+	public static VictoryProgress victoryProgress;
+	static boolean displayingMap, displayingTechTree, displayingVictoryProgress;
+	
 	public static Civilization playerCiv;
 	public static ArrayList<Civilization> civs;
 	Object selected;
@@ -54,7 +54,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		addMouseMotionListener(mouse);
 		addMouseListener(m);
 		map = new HexMap(80, 52);
-		displayingMap = true;
+		victoryProgress = new VictoryProgress();
 		playerCiv = new Civilization();
 		civs = new ArrayList<Civilization>();
 		civs.add(playerCiv);
@@ -62,12 +62,12 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		jpanel.setPreferredSize(new Dimension(150, 720));
 		jpanel.setVisible(false);
 		
-		gold = science = culture = 0;
-		GPT = CPT = SPT = 0;
+		displayingMap = displayingTechTree =  displayingVictoryProgress= true;
+
 		
-		JMenuItem goldDisplay = new JMenuItem("Gold: " + gold + " (+" + GPT +")");
-		JMenuItem cultureDisplay = new JMenuItem("Culture: " + culture + " (+" + CPT +")");
-		JMenuItem scienceDisplay = new JMenuItem("Science:" + science + " (+" + SPT +")");
+		JMenuItem goldDisplay = new JMenuItem("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() +")");
+		JMenuItem cultureDisplay = new JMenuItem("Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() +")");
+		JMenuItem scienceDisplay = new JMenuItem("Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT()+")");
 		
 		goldDisplay.setEnabled(false);
 		cultureDisplay.setEnabled(false);
@@ -181,33 +181,43 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			map.draw(g);
 			playerCiv.draw(g);
 		}
+		else if(displayingTechTree)
+		{
+			
+		}
+		else if(displayingVictoryProgress)
+		{
+			victoryProgress.draw(g);
+		}
 		//jpanel.repaint();
 	}
 
 	public void keyTyped(KeyEvent e) {
 	}
 
-	public void keyPressed(KeyEvent e) {//should only work when displayingMap
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-			movingRight = true;
-		else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-			movingLeft = true;
-		else if (e.getKeyCode() == KeyEvent.VK_UP)
-			movingUp = true;
-		else if (e.getKeyCode() == KeyEvent.VK_DOWN){
-			movingDown = true;
-			toggleSettings();
-		}
-			
-		else if (e.getKeyCode() == KeyEvent.VK_G) {//should only work when displayingMap
-			if (grid)
-				grid = false;
-			else
-				grid = true;
+	public void keyPressed(KeyEvent e) {
+		if(displayingMap){
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+				movingRight = true;
+			else if (e.getKeyCode() == KeyEvent.VK_LEFT)
+				movingLeft = true;
+			else if (e.getKeyCode() == KeyEvent.VK_UP)
+				movingUp = true;
+			else if (e.getKeyCode() == KeyEvent.VK_DOWN){
+				movingDown = true;
+				toggleSettings();
+			}
+				
+			else if (e.getKeyCode() == KeyEvent.VK_G) {//should only work when displayingMap
+				if (grid)
+					grid = false;
+				else
+					grid = true;
+			}
 		}
 	}
 
-	public void keyReleased(KeyEvent e) { //should only work when displayingMap
+	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 			movingRight = false;
 		else if (e.getKeyCode() == KeyEvent.VK_LEFT)
@@ -219,10 +229,12 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {//should only work when displayingMap
-		if (e.getWheelRotation() > 0 && map.ZOOM > .1875)
-			map.ZOOM -= .0625;
-		if (e.getWheelRotation() < 0 && map.ZOOM < 2)
-			map.ZOOM += .0625;
+		if(displayingMap){
+			if (e.getWheelRotation() > 0 && map.ZOOM > .1875)
+				map.ZOOM -= .0625;
+			if (e.getWheelRotation() < 0 && map.ZOOM < 2)
+				map.ZOOM += .0625;
+		}
 	}
 
 	MouseListener m = new MouseListener() {
@@ -251,40 +263,42 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e) { //should only work when displayingMap
-			for (int i = 0; i < map.gameHexs.length; i++) {
-				for (int j = 0; j < map.gameHexs[0].length; j++) {
-					if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(), (int) e.getPoint().getY())) {
-						if (map.gameHexs[i][j].hasUnit()) {
-							isSelected = true;
-							selected = map.gameHexs[i][j].getUnit();
-							availableTiles = HexMap.getSurroundingTiles(i, j, ((Unit) selected).movingSpeed);
-							for (HexTile tile : availableTiles) {
-								Color c = new Color((int) Math.round((tile.getColor().getRed() + 255) / 2),
-										(int) Math.round((tile.getColor().getGreen()) / 2),
-										(int) Math.round(tile.getColor().getBlue()));
-
-								tile.setColor(c);
+		public void mouseClicked(MouseEvent e) {
+			if(displayingMap){
+				for (int i = 0; i < map.gameHexs.length; i++) {
+					for (int j = 0; j < map.gameHexs[0].length; j++) {
+						if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(), (int) e.getPoint().getY())) {
+							if (map.gameHexs[i][j].hasUnit()) {
+								isSelected = true;
+								selected = map.gameHexs[i][j].getUnit();
+								availableTiles = HexMap.getSurroundingTiles(i, j, ((Unit) selected).movingSpeed);
+								for (HexTile tile : availableTiles) {
+									Color c = new Color((int) Math.round((tile.getColor().getRed() + 255) / 2),
+											(int) Math.round((tile.getColor().getGreen()) / 2),
+											(int) Math.round(tile.getColor().getBlue()));
+	
+									tile.setColor(c);
+								}
+							} else if (e.getButton() == e.BUTTON3 && isSelected
+									&& availableTiles.contains(map.gameHexs[i][j])) {
+								((Unit) selected).move(i, j);
+								isSelected = false;
+								selected = null;
+								for (HexTile tile : availableTiles) {
+									Color c;
+									if (tile.type.equals("land"))
+										c = Color.GREEN;
+									else if (tile.type.equals("mountain"))
+										c = Color.GRAY;
+									else if (tile.type.equals("desert"))
+										c = Color.YELLOW;
+									else
+										c = Color.BLUE;
+									tile.setColor(c);
+								}
+								availableTiles.clear();
+	
 							}
-						} else if (e.getButton() == e.BUTTON3 && isSelected
-								&& availableTiles.contains(map.gameHexs[i][j])) {
-							((Unit) selected).move(i, j);
-							isSelected = false;
-							selected = null;
-							for (HexTile tile : availableTiles) {
-								Color c;
-								if (tile.type.equals("land"))
-									c = Color.GREEN;
-								else if (tile.type.equals("mountain"))
-									c = Color.GRAY;
-								else if (tile.type.equals("desert"))
-									c = Color.YELLOW;
-								else
-									c = Color.BLUE;
-								tile.setColor(c);
-							}
-							availableTiles.clear();
-
 						}
 					}
 				}
@@ -300,17 +314,19 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 		@Override
 		public void mouseDragged(MouseEvent m) {
-			Point a = m.getPoint();
-			double px2 = a.getX();
-			double py2 = a.getY();
-			map.x += (px1 - px2) / map.ZOOM;
-			if (map.y > 160 && (py1 - py2) < 0) {
-				map.y += (py1 - py2) / map.ZOOM;
-			} else if (map.y < 4865 && (py1 - py2) > 0) {
-				map.y += (py1 - py2) / map.ZOOM;
+			if(displayingMap){
+				Point a = m.getPoint();
+				double px2 = a.getX();
+				double py2 = a.getY();
+				map.x += (px1 - px2) / map.ZOOM;
+				if (map.y > 160 && (py1 - py2) < 0) {
+					map.y += (py1 - py2) / map.ZOOM;
+				} else if (map.y < 4865 && (py1 - py2) > 0) {
+					map.y += (py1 - py2) / map.ZOOM;
+				}
+				px1 = px2;
+				py1 = py2;
 			}
-			px1 = px2;
-			py1 = py2;
 		}
 	};
 	public void toggleSettings(){
@@ -325,20 +341,23 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	}
 	private class DisplayTechTreeListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			System.out.print("Display Tech Tree");
 			displayingMap = false;
+			displayingTechTree = true;
+			displayingVictoryProgress = false;
 		}
 	}
 	private class DisplayMapListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			System.out.print("Display Map");
 			displayingMap = true;
+			displayingTechTree = false;
+			displayingVictoryProgress = false;
 		}
 	}
 	private class DisplayVictoryProgressListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			System.out.print("Display Victory Progress");
 			displayingMap = false;
+			displayingTechTree = false;
+			displayingVictoryProgress = true;
 		}
 	}
 

@@ -6,10 +6,14 @@ import java.util.ArrayList;
 public class Civilization {
 	ArrayList<City> cities = new ArrayList<City>();
 	ArrayList<Unit> units = new ArrayList<Unit>();
-
+	static int myGold, myCulture, myScience;
+	static int GPT, CPT, SPT;
 	public Civilization() {
 		int locx;
 		int locy;
+		
+		myGold = myCulture = myScience = GPT = CPT = SPT = 0;
+		
 		do {
 			locx = (int) (Math.random() * HexMap.gameHexs.length);
 			locy = (int) (Math.random() * HexMap.gameHexs[0].length);
@@ -34,7 +38,54 @@ public class Civilization {
 		for (Unit unit : units)
 			unit.draw(g);
 	}
-
+	
+	public void setGold(int x){
+		myGold = x;
+	}
+	
+	public void setCulture(int x){
+		myCulture = x;
+	}
+	
+	public void setScience(int x){
+		myScience = x;
+	}
+	
+	public void setGPT(int x) {
+		GPT = x;
+	}
+	
+	public void setCPT(int x) {
+		CPT = x;
+	}
+	
+	public void setSPT(int x) {
+		SPT = x;
+	}
+	
+	public int getGold(){
+		return myGold;
+	}
+	
+	public int getCulture(){
+		return myCulture;
+	}
+	
+	public int getScience(){
+		return myScience;
+	}
+	
+	public int getGPT() {
+		return GPT;
+	}
+	
+	public int getCPT() {
+		return CPT;
+	}
+	
+	public int getSPT() {
+		return SPT;
+	}
 	public City getCity(int i) {
 		return cities.get(i);
 	}
