@@ -86,6 +86,21 @@ public class Civilization {
 	public int getSPT() {
 		return SPT;
 	}
+	public void update(){
+		int foodPT = 0, culturePT = 0, sciencePT = 0, goldPT = 0;
+		for(City city: cities){
+			for(HexTile tile: city.getTiles()){
+				culturePT += tile.getCulture();
+				sciencePT += tile.getScience();
+				goldPT += tile.getGold();
+				foodPT += tile.getFood();
+			}
+			city.setFPT(foodPT);
+		}
+		setGPT(goldPT);
+		setCPT(culturePT);
+		setSPT(sciencePT);
+	}
 	public City getCity(int i) {
 		return cities.get(i);
 	}
@@ -95,5 +110,11 @@ public class Civilization {
 			return false;
 		else
 			return true;
+	}
+	public ArrayList<Unit> getUnits(){
+		return units;
+	}
+	public ArrayList<City> getCities(){
+		return cities;
 	}
 }

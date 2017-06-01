@@ -19,6 +19,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	static boolean framer = false;
 	static Container pane = new Container();
 	static JFrame frame;
+
 	public static void main(String[] args) {
 		frame = new JFrame();
 		frame.setSize((int) WIDTH, (int) HEIGHT);
@@ -40,12 +41,13 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	public static HexMap map;
 	public static VictoryProgress victoryProgress;
 	static boolean displayingMap, displayingTechTree, displayingVictoryProgress;
-	
+
 	public static Civilization playerCiv;
 	public static ArrayList<Civilization> civs;
 	Object selected;
 	boolean isSelected = false;
 	ArrayList<HexTile> availableTiles;
+	int turn;
 
 	public Main() {
 		setFocusable(true);
@@ -61,57 +63,69 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		frame.add(jpanel, BorderLayout.EAST);
 		jpanel.setPreferredSize(new Dimension(150, 720));
 		jpanel.setVisible(false);
+		turn = 0;
 		
-		displayingMap = displayingTechTree =  displayingVictoryProgress= true;
+		JButton endTurn = new JButton("End Turn");
+		jpanel.setLayout(new GridLayout(10, 0));
+		
+		for(int i = 0; i < 9; i++)
+		{
+			jpanel.add(new JLabel("Test"));
+		}
+		jpanel.add(endTurn);
+		displayingMap = displayingTechTree = displayingVictoryProgress = true;
 
-		
-		JMenuItem goldDisplay = new JMenuItem("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() +")");
-		JMenuItem cultureDisplay = new JMenuItem("Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() +")");
-		JMenuItem scienceDisplay = new JMenuItem("Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT()+")");
-		
+		JMenuItem goldDisplay = new JMenuItem("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
+		JMenuItem cultureDisplay = new JMenuItem(
+				"Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() + ")");
+		JMenuItem scienceDisplay = new JMenuItem(
+				"Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT() + ")");
+		JMenuItem turnDisplay = new JMenuItem(
+				"Turn: " + turn);
+
 		goldDisplay.setEnabled(false);
 		cultureDisplay.setEnabled(false);
 		scienceDisplay.setEnabled(false);
-		
+
 		JMenuItem map = new JMenuItem("World Map");
 		JMenuItem techTree = new JMenuItem("Tech Tree");
-		//JMenuItem diplomacy = new JMenuItem("Diplomacy Overview");
+		// JMenuItem diplomacy = new JMenuItem("Diplomacy Overview");
 		JMenuItem victoryProgress = new JMenuItem("Victory Progress");
-		
+		JMenuItem toggleActionBar = new JMenuItem("Toggle Action Bar");
+		toggleActionBar();
+
 		/*
-		JMenuItem save = new JMenuItem("Save");
-		JMenuItem open = new JMenuItem("Open");
-		JMenuItem newGame = new JMenuItem("New Game");
-		*/
+		 * JMenuItem save = new JMenuItem("Save"); JMenuItem open = new
+		 * JMenuItem("Open"); JMenuItem newGame = new JMenuItem("New Game");
+		 */
 
 		JMenu displayMenu = new JMenu("Display");
 		displayMenu.add(map);
 		displayMenu.add(techTree);
-		//displayMenu.add(diplomacy);
+		// displayMenu.add(diplomacy);
 		displayMenu.add(victoryProgress);
-		
+		displayMenu.add(toggleActionBar);
+
 		/*
-		JMenu fileMenu = new JMenu("File");
-		fileMenu.add(newGame);
-		fileMenu.add(save);
-		fileMenu.add(open);
-		*/
-		
+		 * JMenu fileMenu = new JMenu("File"); fileMenu.add(newGame);
+		 * fileMenu.add(save); fileMenu.add(open);
+		 */
+
 		JMenuBar bar = new JMenuBar();
-		//bar.add(fileMenu);
-		
+		// bar.add(fileMenu);
+
 		bar.add(goldDisplay);
 		bar.add(cultureDisplay);
 		bar.add(scienceDisplay);
-		
+		bar.add(turnDisplay);
 		bar.add(displayMenu);
 		frame.add(bar, BorderLayout.NORTH);
-		
 		map.addActionListener(new DisplayMapListener());
 		techTree.addActionListener(new DisplayTechTreeListener());
+		toggleActionBar.addActionListener(new DisplayActionBarListener());
 		victoryProgress.addActionListener(new DisplayVictoryProgressListener());
-		//diplomacy.addActionListener(new DisplayDiplomacyListener());
-		
+		endTurn.addActionListener(new EndTurnListener());
+		// diplomacy.addActionListener(new DisplayDiplomacyListener());
 		start();
 	}
 
@@ -128,7 +142,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		while (isRunning) {
 			start = System.nanoTime();
 			repaint();
-			//jpanel.repaint();
+			// jpanel.repaint();
 			elapsed = System.nanoTime() - start;
 			wait = (200 / 6) - elapsed / 1000000;
 			if (wait <= 0)
@@ -176,39 +190,35 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, (int) WIDTH, (int) HEIGHT);
 		g.setColor(Color.BLACK);
-		if(displayingMap)
-		{
+		if (displayingMap) {
 			map.draw(g);
 			playerCiv.draw(g);
-		}
-		else if(displayingTechTree)
-		{
-			
-		}
-		else if(displayingVictoryProgress)
-		{
+		} else if (displayingTechTree) {
+
+		} else if (displayingVictoryProgress) {
 			victoryProgress.draw(g);
 		}
-		//jpanel.repaint();
+		// jpanel.repaint();
 	}
 
 	public void keyTyped(KeyEvent e) {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if(displayingMap){
+		if (displayingMap) {
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 				movingRight = true;
 			else if (e.getKeyCode() == KeyEvent.VK_LEFT)
 				movingLeft = true;
 			else if (e.getKeyCode() == KeyEvent.VK_UP)
 				movingUp = true;
-			else if (e.getKeyCode() == KeyEvent.VK_DOWN){
+			else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				movingDown = true;
-				toggleSettings();
+				// toggleSettings();
 			}
-				
-			else if (e.getKeyCode() == KeyEvent.VK_G) {//should only work when displayingMap
+
+			else if (e.getKeyCode() == KeyEvent.VK_G) {// should only work when
+														// displayingMap
 				if (grid)
 					grid = false;
 				else
@@ -228,8 +238,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			movingDown = false;
 	}
 
-	public void mouseWheelMoved(MouseWheelEvent e) {//should only work when displayingMap
-		if(displayingMap){
+	public void mouseWheelMoved(MouseWheelEvent e) {// should only work when
+													// displayingMap
+		if (displayingMap) {
 			if (e.getWheelRotation() > 0 && map.ZOOM > .1875)
 				map.ZOOM -= .0625;
 			if (e.getWheelRotation() < 0 && map.ZOOM < 2)
@@ -264,11 +275,12 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if(displayingMap){
+			if (displayingMap) {
 				for (int i = 0; i < map.gameHexs.length; i++) {
 					for (int j = 0; j < map.gameHexs[0].length; j++) {
-						if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(), (int) e.getPoint().getY())) {
-							if (map.gameHexs[i][j].hasUnit()) {
+						if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(),
+								(int) e.getPoint().getY())) {
+							if (map.gameHexs[i][j].hasUnit() && map.gameHexs[i][j].getUnit().canMove()) {
 								isSelected = true;
 								selected = map.gameHexs[i][j].getUnit();
 								availableTiles = HexMap.getSurroundingTiles(i, j, ((Unit) selected).movingSpeed);
@@ -276,7 +288,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 									Color c = new Color((int) Math.round((tile.getColor().getRed() + 255) / 2),
 											(int) Math.round((tile.getColor().getGreen()) / 2),
 											(int) Math.round(tile.getColor().getBlue()));
-	
+
 									tile.setColor(c);
 								}
 							} else if (e.getButton() == e.BUTTON3 && isSelected
@@ -297,7 +309,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 									tile.setColor(c);
 								}
 								availableTiles.clear();
-	
+
 							}
 						}
 					}
@@ -314,7 +326,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 		@Override
 		public void mouseDragged(MouseEvent m) {
-			if(displayingMap){
+			if (displayingMap) {
 				Point a = m.getPoint();
 				double px2 = a.getX();
 				double py2 = a.getY();
@@ -329,36 +341,66 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			}
 		}
 	};
-	public void toggleSettings(){
-		if(framer){
+
+	public void toggleActionBar() {
+		if (framer) {
 			jpanel.setVisible(true);
 			framer = false;
-		}
-		else{
+		} else {
 			jpanel.setVisible(false);
 			framer = true;
 		}
 	}
-	private class DisplayTechTreeListener implements ActionListener{
-		public void actionPerformed(ActionEvent e){
+
+	private class DisplayTechTreeListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			displayingMap = false;
 			displayingTechTree = true;
 			displayingVictoryProgress = false;
 		}
 	}
-	private class DisplayMapListener implements ActionListener{
-		public void actionPerformed(ActionEvent e){
+
+	private class DisplayMapListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			displayingMap = true;
 			displayingTechTree = false;
 			displayingVictoryProgress = false;
 		}
 	}
-	private class DisplayVictoryProgressListener implements ActionListener{
-		public void actionPerformed(ActionEvent e){
+
+	private class DisplayVictoryProgressListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 			displayingMap = false;
 			displayingTechTree = false;
 			displayingVictoryProgress = true;
 		}
 	}
 
+	private class DisplayActionBarListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			toggleActionBar();
+		}
+	}
+	private class EndTurnListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			nextTurn();
+		}
+	}
+
+	public void nextTurn() {
+		turn++;
+		for (Civilization civ : civs) {
+			civ.update();
+			civ.setCulture(civ.getCulture() + civ.getCPT());
+			civ.setGold(civ.getGold() + civ.getGPT());
+			civ.setScience(civ.getScience() + civ.getSPT());
+			for (Unit unit : civ.getUnits()) {
+				unit.canMove(true);
+			}
+			for (City city : civ.getCities()) {
+				city.setFood(city.getFood() + city.getFPT());
+				// Building decrement
+			}
+		}
+	}
 }

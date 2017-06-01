@@ -8,6 +8,7 @@ public abstract class Unit {
 	int locx, locy;
 	Civilization civ;
 	int movingSpeed;
+	boolean canMove = true;
 	public Unit(int locx, int locy, Civilization civ) {
 		this.locx = locx;
 		this.locy = locy;
@@ -28,5 +29,12 @@ public abstract class Unit {
 	public void move(int newx, int newy){
 		this.locx = newx;
 		this.locy = newy;
+		canMove = false;
+	}
+	public void canMove(boolean canMove){
+		this.canMove = canMove;
+	}
+	public boolean canMove(){
+		return this.canMove;
 	}
 }

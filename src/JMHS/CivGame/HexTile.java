@@ -23,6 +23,8 @@ public class HexTile {
 	Color c;
 	Graphics g;
 
+	int gold, culture, science, food;
+	
 	public HexTile(double mapx, double mapy, float color, float moisture, int i, int j) {
 		this.i = i;
 		this.j = j;
@@ -181,5 +183,21 @@ public class HexTile {
 			}
 		}
 		return null;
+	}
+	public int getGold() {
+		// TODO Auto-generated method stub
+		return this.gold;
+	}
+	public int getFood() {
+		// TODO Auto-generated method stub
+		return this.food;
+	}
+	public int getCulture() {
+		// TODO Auto-generated method stub
+		return this.culture;
+	}
+	public int getScience() {
+		// TODO Auto-generated method stub
+		return this.science;
 	}
 }
