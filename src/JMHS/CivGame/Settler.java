@@ -11,4 +11,8 @@ public class Settler extends Unit {
 		City newCity = new City(locx, locy);
 		civ.addCity(newCity);
 	}
+	
+	public String toString(){
+		return "Settler";
+	}
 }

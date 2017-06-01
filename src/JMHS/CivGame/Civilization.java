@@ -8,10 +8,12 @@ public class Civilization {
 	ArrayList<Unit> units = new ArrayList<Unit>();
 	static int myGold, myCulture, myScience;
 	static int GPT, CPT, SPT;
-	public Civilization() {
+	static String myName;
+	public Civilization(String name) {
 		int locx;
 		int locy;
 		
+		myName = name;
 		myGold = myCulture = myScience = GPT = CPT = SPT = 0;
 		
 		do {
@@ -31,7 +33,7 @@ public class Civilization {
 	public void addCity(City city) {
 		cities.add(city);
 	}
-
+	
 	public void draw(Graphics g) {
 		for (City city : cities)
 			city.draw(g);
@@ -61,6 +63,10 @@ public class Civilization {
 	
 	public void setSPT(int x) {
 		SPT = x;
+	}
+	
+	public String getName(){
+		return myName;
 	}
 	
 	public int getGold(){

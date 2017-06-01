@@ -47,6 +47,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	Object selected;
 	boolean isSelected = false;
 	ArrayList<HexTile> availableTiles;
+	JMenuItem goldDisplay, cultureDisplay, scienceDisplay, turnDisplay;
+	JLabel object,movement;
 	int turn;
 
 	public Main() {
@@ -57,7 +59,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		addMouseListener(m);
 		map = new HexMap(80, 52);
 		victoryProgress = new VictoryProgress();
-		playerCiv = new Civilization();
+		playerCiv = new Civilization("Player");
 		civs = new ArrayList<Civilization>();
 		civs.add(playerCiv);
 		frame.add(jpanel, BorderLayout.EAST);
@@ -68,25 +70,31 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		JButton endTurn = new JButton("End Turn");
 		jpanel.setLayout(new GridLayout(10, 0));
 		
-		for(int i = 0; i < 9; i++)
+		object = new JLabel("");
+		movement = new JLabel("");
+		
+		jpanel.add(object);
+		jpanel.add(movement);
+		for(int i = 0; i < 7; i++)
 		{
 			jpanel.add(new JLabel("Test"));
 		}
 		jpanel.add(endTurn);
 		displayingMap = displayingTechTree = displayingVictoryProgress = true;
 
-		JMenuItem goldDisplay = new JMenuItem("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
-		JMenuItem cultureDisplay = new JMenuItem(
+		goldDisplay = new JMenuItem("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
+		cultureDisplay = new JMenuItem(
 				"Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() + ")");
-		JMenuItem scienceDisplay = new JMenuItem(
+		scienceDisplay = new JMenuItem(
 				"Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT() + ")");
-		JMenuItem turnDisplay = new JMenuItem(
+		turnDisplay = new JMenuItem(
 				"Turn: " + turn);
 
 		goldDisplay.setEnabled(false);
 		cultureDisplay.setEnabled(false);
 		scienceDisplay.setEnabled(false);
-
+		turnDisplay.setEnabled(false);
+		
 		JMenuItem map = new JMenuItem("World Map");
 		JMenuItem techTree = new JMenuItem("Tech Tree");
 		// JMenuItem diplomacy = new JMenuItem("Diplomacy Overview");
@@ -281,6 +289,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 						if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(),
 								(int) e.getPoint().getY())) {
 							if (map.gameHexs[i][j].hasUnit() && map.gameHexs[i][j].getUnit().canMove()) {
+								object.setText(map.gameHexs[i][j].getUnit().getCiv().getName() + "'s " + map.gameHexs[i][j].getUnit().toString());
+								movement.setText("Movement: " + "ADD CURRENT MOVES /" + map.gameHexs[i][j].getUnit().movingSpeed());
 								isSelected = true;
 								selected = map.gameHexs[i][j].getUnit();
 								availableTiles = HexMap.getSurroundingTiles(i, j, ((Unit) selected).movingSpeed);
@@ -389,6 +399,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 	public void nextTurn() {
 		turn++;
+		turnDisplay.setText("Turn: " + turn);
 		for (Civilization civ : civs) {
 			civ.update();
 			civ.setCulture(civ.getCulture() + civ.getCPT());

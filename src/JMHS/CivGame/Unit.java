@@ -26,6 +26,9 @@ public abstract class Unit {
 	public int movingSpeed(){
 		return movingSpeed;
 	}
+	public Civilization getCiv(){
+		return civ;
+	}
 	public void move(int newx, int newy){
 		this.locx = newx;
 		this.locy = newy;
