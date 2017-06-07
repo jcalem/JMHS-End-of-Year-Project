@@ -49,8 +49,8 @@ public class HexMap {
 					boardx -= 2 * gameHexs.length * HexTile.RADIUS * Main.SCALE;
 				gameHexs[i][j].setCoords(boardx, boardy);
 //				if(i % gameHexs.length == 0) gameHexs[i][j].draw(g, 1);
-//				if(gameHexs[i][j].getColor().equals(new Color(1, 1, 255)))
-//					gameHexs[i][j].draw(g, 1);
+//				if(gameHexs[i][j].type.equals("land")){}
+//					gameHexs[i][j].draw(g, 2);
 				 gameHexs[i][j].draw(g);
 			}
 		}

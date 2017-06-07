@@ -2,12 +2,17 @@ package JMHS.CivGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 public abstract class Unit {
 
-	int locx, locy;
+	static int locx;
+	static int locy;
 	Civilization civ;
 	int movingSpeed;
+	static Image img = new ImageIcon("xyz.png").getImage();
 	boolean canMove = true;
 	public Unit(int locx, int locy, Civilization civ) {
 		this.locx = locx;
@@ -16,12 +21,10 @@ public abstract class Unit {
 		movingSpeed = 2;
 	}
 
-	public void draw(Graphics g) {
+	public static void draw(Graphics g) {
 		int radius = 100;
-		g.setColor(Color.RED);
-		g.fillOval((int) Math.round(HexMap.gameHexs[locx][locy].getBoardX() - (radius * HexMap.ZOOM / 2)),
-				(int) Math.round(HexMap.gameHexs[locx][locy].getBoardY() - (radius * HexMap.ZOOM) / 2),
-				(int) Math.round(radius * HexMap.ZOOM), (int) Math.round(radius * HexMap.ZOOM));
+		//g.drawImage(img, ,, null);
+		g.drawImage(img, (int) Math.round(HexMap.gameHexs[locx][locy].getBoardX() - (radius * HexMap.ZOOM / 2)),(int) Math.round(HexMap.gameHexs[locx][locy].getBoardY() - (radius * HexMap.ZOOM) / 2), (int) Math.round(radius * HexMap.ZOOM), (int) Math.round(radius * HexMap.ZOOM), null);
 	}
 	public int movingSpeed(){
 		return movingSpeed;
