@@ -394,6 +394,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	private class EndTurnListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			nextTurn();
+			requestFocus();
 		}
 	}
 
