@@ -16,7 +16,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	boolean dragging = false;
 	public static boolean grid = false;
 	static JPanel jpanel = new JPanel();
-	static boolean framer = false;
+	static JPanel blank = new JPanel();
+	static JScrollPane jscroll = new JScrollPane(jpanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	static boolean framer = true;
 	static Container pane = new Container();
 	static JFrame frame;
 
@@ -49,6 +51,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	ArrayList<HexTile> availableTiles;
 	JMenuItem goldDisplay, cultureDisplay, scienceDisplay, turnDisplay;
 	JLabel object,movement;
+	static JButton endTurn;
 	int turn;
 
 	public Main() {
@@ -62,24 +65,26 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		playerCiv = new Civilization("Player");
 		civs = new ArrayList<Civilization>();
 		civs.add(playerCiv);
-		frame.add(jpanel, BorderLayout.EAST);
-		jpanel.setPreferredSize(new Dimension(150, 720));
+		frame.add(jscroll, BorderLayout.EAST);
+		jpanel.setPreferredSize(new Dimension(200, 720));
 		jpanel.setVisible(false);
+		jscroll.setVisible(true);
 		turn = 0;
 		
-		JButton endTurn = new JButton("End Turn");
-		jpanel.setLayout(new GridLayout(10, 0));
+	
+		jpanel.setLayout(new BoxLayout(jpanel, BoxLayout.PAGE_AXIS));
 		
-		object = new JLabel("");
-		movement = new JLabel("");
+		endTurn = addFittedButton(jpanel, "End Turn");
+		addFittedLabel(jpanel, "-----------------------------------------------");
+		object = addFittedLabel(jpanel, "");
+		movement = addFittedLabel(jpanel, "");
 		
-		jpanel.add(object);
-		jpanel.add(movement);
-		for(int i = 0; i < 7; i++)
+		for(int i = 0; i < 100; i++)
 		{
-			jpanel.add(new JLabel("Test"));
+			addFittedButton(jpanel, "Example Button");
 		}
-		jpanel.add(endTurn);
+
+		
 		displayingMap = displayingTechTree = displayingVictoryProgress = true;
 
 		goldDisplay = new JMenuItem("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
@@ -150,7 +155,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		while (isRunning) {
 			start = System.nanoTime();
 			repaint();
-			// jpanel.repaint();
+			//jscroll.repaint();
+			//jpanel.repaint();
 			elapsed = System.nanoTime() - start;
 			wait = (200 / 6) - elapsed / 1000000;
 			if (wait <= 0)
@@ -206,7 +212,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		} else if (displayingVictoryProgress) {
 			victoryProgress.draw(g);
 		}
-		// jpanel.repaint();
+		
+		frame.repaint();
+
 	}
 
 	public void keyTyped(KeyEvent e) {
@@ -351,13 +359,36 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			}
 		}
 	};
-
+	public JButton addFittedButton(JPanel p, String t)
+	{		
+		JPanel temp = new JPanel();
+		temp.setLayout(new GridLayout(1, 0));
+		JButton button = new JButton(t);
+		temp.add(button);
+		p.add(temp);
+		return button;
+	}
+	public JLabel addFittedLabel(JPanel p, String t)
+	{
+		JPanel temp = new JPanel();
+		temp.setLayout(new GridLayout(1, 0));
+		JLabel label = new JLabel(t);
+		temp.add(label);
+		p.add(temp);
+		return label;
+	}
 	public void toggleActionBar() {
 		if (framer) {
-			jpanel.setVisible(true);
+			jpanel.setVisible(false);
+			jscroll.setVisible(false);
+			jscroll.setViewportView(null);
+			frame.revalidate();
 			framer = false;
 		} else {
-			jpanel.setVisible(false);
+			jpanel.setVisible(true);
+			jscroll.setVisible(true);
+			jscroll.setViewportView(jpanel);
+			frame.revalidate();
 			framer = true;
 		}
 	}
