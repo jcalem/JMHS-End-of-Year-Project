@@ -52,6 +52,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	JMenuItem goldDisplay, cultureDisplay, scienceDisplay, turnDisplay;
 	JLabel object,movement;
 	static JButton endTurn;
+	ArrayList<JComponent> scrollComponents = new ArrayList<JComponent>();
 	int turn;
 
 	public Main() {
@@ -66,7 +67,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		civs = new ArrayList<Civilization>();
 		civs.add(playerCiv);
 		frame.add(jscroll, BorderLayout.EAST);
-		jpanel.setPreferredSize(new Dimension(200, 720));
+		jpanel.setPreferredSize(new Dimension(200, 0)); //changed in updatePanelSize(), referenced line 114
 		jpanel.setVisible(false);
 		jscroll.setVisible(true);
 		turn = 0;
@@ -75,13 +76,18 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		jpanel.setLayout(new BoxLayout(jpanel, BoxLayout.PAGE_AXIS));
 		
 		endTurn = addFittedButton(jpanel, "End Turn");
-		addFittedLabel(jpanel, "-----------------------------------------------");
+		scrollComponents.add(endTurn);
+		scrollComponents.add(addFittedLabel(jpanel, "-----------------------------------------------"));
+		
 		object = addFittedLabel(jpanel, "");
 		movement = addFittedLabel(jpanel, "");
 		
+		scrollComponents.add(object);
+		scrollComponents.add(movement);
 		for(int i = 0; i < 100; i++)
 		{
-			addFittedButton(jpanel, "Example Button");
+			JButton temp = addFittedButton(jpanel, "Example Button");
+			scrollComponents.add(temp);
 		}
 
 		
@@ -387,12 +393,24 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		} else {
 			jpanel.setVisible(true);
 			jscroll.setVisible(true);
+			updatePanelSize();
 			jscroll.setViewportView(jpanel);
 			frame.revalidate();
 			framer = true;
+			System.out.println(jpanel.getPreferredSize());
 		}
 	}
-
+	public void updatePanelSize() {
+		int l = 0;
+		for(int i = 0; i < scrollComponents.size(); i++)
+		{
+			if((scrollComponents.get(i)) instanceof JLabel && ((JLabel)scrollComponents.get(i)).getText().equals(""))
+				l += 0;
+			else if (scrollComponents.get(i).isVisible())
+				l += 29;
+		}
+		jpanel.setPreferredSize(new Dimension(200, l));
+	}
 	private class DisplayTechTreeListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			displayingMap = false;
