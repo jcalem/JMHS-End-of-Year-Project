@@ -50,7 +50,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 	boolean isSelected = false;
 	ArrayList<HexTile> availableTiles;
 	JMenuItem goldDisplay, cultureDisplay, scienceDisplay, turnDisplay;
-	JLabel object,movement;
+	JLabel label1,label2;
 	static JButton endTurn;
 	ArrayList<JComponent> scrollComponents = new ArrayList<JComponent>();
 	int turn;
@@ -77,20 +77,20 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		
 		endTurn = addFittedButton(jpanel, "End Turn");
 		scrollComponents.add(endTurn);
-		scrollComponents.add(addFittedLabel(jpanel, "-----------------------------------------------"));
+		scrollComponents.add(addFittedLabel(jpanel, "--------------------------------------------------"));
 		
-		object = addFittedLabel(jpanel, "");
-		movement = addFittedLabel(jpanel, "");
+		label1 = addFittedLabel(jpanel, "Welcome to DoCaBa's Civ!");
+		label2 = addFittedLabel(jpanel, "Find your settler to start.");
 		
-		scrollComponents.add(object);
-		scrollComponents.add(movement);
+		scrollComponents.add(label1);
+		scrollComponents.add(label2);
+		
 		for(int i = 0; i < 100; i++)
 		{
-			JButton temp = addFittedButton(jpanel, "Example Button");
+			JButton temp = addFittedButton(jpanel, "Example Button"); //Buttons in the scrollComponents start at 4
 			scrollComponents.add(temp);
 		}
 
-		
 		displayingMap = displayingTechTree = displayingVictoryProgress = true;
 
 		goldDisplay = new JMenuItem("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
@@ -108,30 +108,17 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		
 		JMenuItem map = new JMenuItem("World Map");
 		JMenuItem techTree = new JMenuItem("Tech Tree");
-		// JMenuItem diplomacy = new JMenuItem("Diplomacy Overview");
 		JMenuItem victoryProgress = new JMenuItem("Victory Progress");
 		JMenuItem toggleActionBar = new JMenuItem("Toggle Action Bar");
 		toggleActionBar();
 
-		/*
-		 * JMenuItem save = new JMenuItem("Save"); JMenuItem open = new
-		 * JMenuItem("Open"); JMenuItem newGame = new JMenuItem("New Game");
-		 */
-
 		JMenu displayMenu = new JMenu("Display");
 		displayMenu.add(map);
 		displayMenu.add(techTree);
-		// displayMenu.add(diplomacy);
 		displayMenu.add(victoryProgress);
 		displayMenu.add(toggleActionBar);
 
-		/*
-		 * JMenu fileMenu = new JMenu("File"); fileMenu.add(newGame);
-		 * fileMenu.add(save); fileMenu.add(open);
-		 */
-
 		JMenuBar bar = new JMenuBar();
-		// bar.add(fileMenu);
 
 		bar.add(goldDisplay);
 		bar.add(cultureDisplay);
@@ -144,7 +131,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		toggleActionBar.addActionListener(new DisplayActionBarListener());
 		victoryProgress.addActionListener(new DisplayVictoryProgressListener());
 		endTurn.addActionListener(new EndTurnListener());
-		// diplomacy.addActionListener(new DisplayDiplomacyListener());
 		start();
 	}
 
@@ -161,8 +147,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		while (isRunning) {
 			start = System.nanoTime();
 			repaint();
-			//jscroll.repaint();
-			//jpanel.repaint();
 			elapsed = System.nanoTime() - start;
 			wait = (200 / 6) - elapsed / 1000000;
 			if (wait <= 0)
@@ -189,12 +173,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		if (map.x < 0) {
 			map.x = 2 * HexTile.r * map.gameHexs.length * SCALE;
 		}
-		/*
-		 * if(map.x <= -2 * HexTile.r * map.gameHexs.length * SCALE + (map.ZOOM
-		 * * WIDTH/2)){ map.x = -1 * map.ZOOM * WIDTH/2; }
-		 */
-		// System.out.println(2 * map.gameHexs.length *
-		// map.gameHexs[0][0].RADIUS * Main.SCALE + );
 
 		if (movingLeft)
 			map.x -= map.movingSpeed / map.ZOOM;
@@ -236,11 +214,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 				movingUp = true;
 			else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				movingDown = true;
-				// toggleSettings();
 			}
 
-			else if (e.getKeyCode() == KeyEvent.VK_G) {// should only work when
-														// displayingMap
+			else if (e.getKeyCode() == KeyEvent.VK_G) {
 				if (grid)
 					grid = false;
 				else
@@ -260,8 +236,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			movingDown = false;
 	}
 
-	public void mouseWheelMoved(MouseWheelEvent e) {// should only work when
-													// displayingMap
+	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (displayingMap) {
 			if (e.getWheelRotation() > 0 && map.ZOOM > .1875)
 				map.ZOOM -= .0625;
@@ -274,7 +249,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// dragging = false;
+			dragging = false;
 
 		}
 
@@ -303,8 +278,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 						if (map.gameHexs[i][j].getShape().contains((int) e.getPoint().getX(),
 								(int) e.getPoint().getY())) {
 							if (map.gameHexs[i][j].hasUnit() && map.gameHexs[i][j].getUnit().canMove()) {
-								object.setText(map.gameHexs[i][j].getUnit().getCiv().getName() + "'s " + map.gameHexs[i][j].getUnit().toString());
-								movement.setText("Movement: " + "ADD CURRENT MOVES /" + map.gameHexs[i][j].getUnit().movingSpeed());
+								label1.setText(map.gameHexs[i][j].getUnit().getCiv().getName() + "'s " + map.gameHexs[i][j].getUnit().toString());
+								label2.setText("Movement: " + "ADD CURRENT MOVES /" + map.gameHexs[i][j].getUnit().movingSpeed());
 								isSelected = true;
 								selected = map.gameHexs[i][j].getUnit();
 								availableTiles = HexMap.getSurroundingTiles(i, j, ((Unit) selected).movingSpeed);
@@ -404,12 +379,10 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		int l = 0;
 		for(int i = 0; i < scrollComponents.size(); i++)
 		{
-			if((scrollComponents.get(i)) instanceof JLabel && ((JLabel)scrollComponents.get(i)).getText().equals(""))
-				l += 0;
-			else if (scrollComponents.get(i).isVisible())
-				l += 29;
+			if (scrollComponents.get(i).isVisible())
+				l += 26;
 		}
-		jpanel.setPreferredSize(new Dimension(200, l));
+		jpanel.setPreferredSize(new Dimension(200, l - 30));
 	}
 	private class DisplayTechTreeListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
