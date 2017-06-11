@@ -66,7 +66,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		playerCiv = new Civilization("Player");
 		civs = new ArrayList<Civilization>();
 		civs.add(playerCiv);
-		((Settler)playerCiv.units.get(0)).createCity(); //REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE THIS if you wanna see a settler
 		frame.add(jscroll, BorderLayout.EAST);
 		jpanel.setPreferredSize(new Dimension(200, 0)); //changed in updatePanelSize(), referenced line 114
 		jpanel.setVisible(false);
@@ -90,6 +89,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		{
 			JButton temp = addFittedButton(jpanel, ""); //Buttons in the scrollComponents start at 4
 			scrollComponents.add(temp);
+			temp.setVisible(false);
 		}
 
 		displayingMap = displayingTechTree = displayingVictoryProgress = true;
@@ -292,6 +292,17 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 
 									tile.setColor(c);
 								}
+								if(selected instanceof Settler)
+								{
+									((JButton)scrollComponents.get(4)).addActionListener(new CreateCityListener((Settler)selected));
+									((JButton)scrollComponents.get(4)).setText("Create City!");
+									((JButton)scrollComponents.get(4)).setVisible(true);
+									
+									for(int n = 5; n < scrollComponents.size(); n++)
+									{
+										scrollComponents.get(n).setVisible(false);
+									}
+								}
 							}
 							else if(map.gameHexs[i][j].hasCity()){
 								selected = map.gameHexs[i][j].getCity();
@@ -403,6 +414,25 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		public void actionPerformed(ActionEvent e)
 		{
 			System.out.println(myX);
+		}
+	}
+	private class CreateCityListener implements ActionListener{
+		public Settler mySettler;
+		public CreateCityListener(Settler s)
+		{
+			mySettler = s;
+		}
+		public void actionPerformed(ActionEvent e)
+		{
+			try{
+				mySettler.createCity();
+				mySettler = null;
+			}
+			catch (java.lang.NullPointerException j)
+			{
+				System.out.println("You've already created a city with the selected Settler!");
+			}
+			
 		}
 	}
 	private class DisplayTechTreeListener implements ActionListener {
