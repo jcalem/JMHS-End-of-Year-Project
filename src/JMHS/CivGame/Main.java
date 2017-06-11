@@ -435,6 +435,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			for (City city : civ.getCities()) {
 				city.setFood(city.getFood() + city.getFPT());
 				// Building decrement
+				
 			}
 		}
 	}
