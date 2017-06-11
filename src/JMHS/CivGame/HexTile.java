@@ -87,34 +87,55 @@ public class HexTile {
 		return c;
 	}
 	public void draw(Graphics g) {
-		Image img22 = new ImageIcon("land1.jpg").getImage();
+		Image img2 = new ImageIcon("land1.jpg").getImage();
 		Image img1 = new ImageIcon("sea1.jpg").getImage();
 		double sin30 = RADIUS * Math.sin(Math.PI / 6);
 		double sin60 = RADIUS * Math.sin(Math.PI / 3);
 		g.setColor(c);
 		double tint_factor = .5;
-		if (Main.playerCiv.hasCity()) {
-			if (Main.playerCiv.getCity(0).area.contains(this)) {
-				if(getType().equals("land"))
-					g.drawImage(img22, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
-				else
-					g.drawImage(img1, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
-
-					
-			}
-		}
-		
+//		if (Main.playerCiv.hasCity()) {
+//			if (Main.playerCiv.getCity(0).area.contains(this)) {
+//				if(getType().equals("land"))
+//					g.drawImage(img2, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+//				else
+//					g.drawImage(img1, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+//			}
+//		}
 		int[] ycoords = { (int) Math.round(y + RADIUS), (int) Math.round(sin30 + y), (int) Math.round(y - sin30),
 				(int) Math.round(y - RADIUS), (int) Math.round(y - sin30), (int) Math.round(sin30 + y) };
 		int[] xcoords = { (int) Math.round(x), (int) Math.round(sin60 + x), (int) Math.round(sin60 + x),
 				(int) Math.round(x), (int) Math.round(x - sin60), (int) Math.round(x - sin60) };
+		
+		boolean isPartOfCity = false;
+		for(Civilization civ: Main.civs){
+			for(City city: civ.cities)
+			{
+				if (city.area.contains(this)) {
+					isPartOfCity = true;
+				}
+			}
+		}
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 		// g.setColor(new Color(color, color, color));
-		Image img2 = new ImageIcon("land.jpg").getImage();
+		Image img3 = new ImageIcon("land.jpg").getImage();
 		Image img = new ImageIcon("sea.jpg").getImage();
-		if(getType().equals("land")){
+		if(isPartOfCity)
+		{
+			if(getType().equals("land")){
+				g.setClip(getShape());
+				g.drawImage(img2, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+				Unit.draw(g);
+			}
+			else{
+				g.setClip(getShape());
+				g.drawImage(img1, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+				Unit.draw(g);
+			}
+			
+		}
+		else if(getType().equals("land")){
 			g.setClip(getShape());
-			g.drawImage(img2, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+			g.drawImage(img3, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
 			Unit.draw(g);
 		}
 		else{

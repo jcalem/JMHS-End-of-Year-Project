@@ -66,6 +66,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		playerCiv = new Civilization("Player");
 		civs = new ArrayList<Civilization>();
 		civs.add(playerCiv);
+		((Settler)playerCiv.units.get(0)).createCity(); //REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE THIS if you wanna see a settler
 		frame.add(jscroll, BorderLayout.EAST);
 		jpanel.setPreferredSize(new Dimension(200, 0)); //changed in updatePanelSize(), referenced line 114
 		jpanel.setVisible(false);

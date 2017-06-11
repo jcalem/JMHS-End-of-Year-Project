@@ -2,7 +2,10 @@ package JMHS.CivGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 
 public class City {
 	
@@ -10,6 +13,8 @@ public class City {
 	ArrayList<HexTile> area;
 	int FPT, food, PTT, production;
 	Buildings building;
+	Image img2 = new ImageIcon("land1.jpg").getImage();
+	Image img1 = new ImageIcon("sea1.jpg").getImage();
 	public City(int locx, int locy){
 		this.locx = locx;
 		this.locy = locy;
@@ -17,8 +22,15 @@ public class City {
 		building = new Buildings();
 	}
 	public void draw(Graphics g){
-		g.setColor(Color.GRAY);
-		g.fillOval(locx, locy, 30, 30);
+//		for(HexTile t: area)
+//		{
+//			double sin30 = t.RADIUS * Math.sin(Math.PI / 6);
+//			double sin60 = t.RADIUS * Math.sin(Math.PI / 3);
+//			if(t.getType().equals("land"))
+//				g.drawImage(img2, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
+//			else
+//				g.drawImage(img1, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
+//		}
 	}
 	public ArrayList<HexTile> getTiles(){
 		return area;
