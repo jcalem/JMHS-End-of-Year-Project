@@ -87,8 +87,15 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		
 		for(int i = 0; i < 100; i++)
 		{
+			String t = "Xex";
 			JButton temp = addFittedButton(jpanel, "Example Button"); //Buttons in the scrollComponents start at 4
 			scrollComponents.add(temp);
+			temp.addActionListener(new BuyListener(t + i));
+		}
+		
+		for(int i = 4; i < 50; i++)
+		{
+			scrollComponents.remove(i);
 		}
 
 		displayingMap = displayingTechTree = displayingVictoryProgress = true;
@@ -384,6 +391,17 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 				l += 26;
 		}
 		jpanel.setPreferredSize(new Dimension(200, l - 30));
+	}
+	private class BuyListener implements ActionListener{
+		public String myX;
+		public BuyListener(String x)
+		{
+			myX = x;
+		}
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println(myX);
+		}
 	}
 	private class DisplayTechTreeListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
