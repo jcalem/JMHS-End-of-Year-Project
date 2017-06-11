@@ -87,15 +87,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		
 		for(int i = 0; i < 100; i++)
 		{
-			String t = "Xex";
-			JButton temp = addFittedButton(jpanel, "Example Button"); //Buttons in the scrollComponents start at 4
+			JButton temp = addFittedButton(jpanel, ""); //Buttons in the scrollComponents start at 4
 			scrollComponents.add(temp);
-			temp.addActionListener(new BuyListener(t + i));
-		}
-		
-		for(int i = 4; i < 50; i++)
-		{
-			scrollComponents.remove(i);
 		}
 
 		displayingMap = displayingTechTree = displayingVictoryProgress = true;
@@ -297,6 +290,14 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 											(int) Math.round(tile.getColor().getBlue()));
 
 									tile.setColor(c);
+								}
+							}
+							else if(map.gameHexs[i][j].hasCity()){
+								selected = map.gameHexs[i][j].getCity();
+								int k = 4;
+								for(String str: ((City)selected).building.buildings.keySet()){
+									((JButton)scrollComponents.get(k)).setText(str);
+									k++;
 								}
 							} else if (e.getButton() == e.BUTTON3 && isSelected
 									&& availableTiles.contains(map.gameHexs[i][j])) {

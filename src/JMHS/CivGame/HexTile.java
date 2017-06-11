@@ -200,6 +200,15 @@ public class HexTile {
 		}
 		return null;
 	}
+	public City getCity(){
+		for (Civilization civ : Main.civs) {
+			for (City city : civ.cities) {
+				if (city.locx == this.i && city.locy == this.j)
+					return city;
+			}
+		}
+		return null;
+	}
 	public int getGold() {
 		// TODO Auto-generated method stub
 		return this.gold;
