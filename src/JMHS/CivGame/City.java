@@ -15,8 +15,7 @@ public class City {
 	Buildings building;
 	Image img2 = new ImageIcon("land1.jpg").getImage();
 	Image img1 = new ImageIcon("sea1.jpg").getImage();
-	Image center = new ImageIcon("babysach.jpg"
-			+ "").getImage();
+	Image center = new ImageIcon("babysach.jpg").getImage();
 	public City(int locx, int locy){
 		this.locx = locx;
 		this.locy = locy;

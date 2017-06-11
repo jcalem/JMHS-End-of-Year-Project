@@ -195,7 +195,7 @@ public class HexTile {
 
 	public boolean hasCity() {
 		for (Civilization civ : Main.civs) {
-			for (Unit city : civ.units) {
+			for (City city : civ.cities) {
 				if (city.locx == this.i && city.locy == this.j)
 					return true;
 			}

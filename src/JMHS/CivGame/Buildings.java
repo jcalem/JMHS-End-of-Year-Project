@@ -16,6 +16,7 @@ public class Buildings {
 				String key = str.substring(0, str.indexOf(' '));
 				String[] value = str.substring(str.indexOf('0') + 1).split("\\s+");
 					buildings.put(key, value);
+			System.out.println("TEST");
 			}
 		}
 		catch(Exception e){

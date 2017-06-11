@@ -198,7 +198,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			victoryProgress.draw(g);
 		}
 		
-		
 		frame.repaint();
 
 	}
@@ -308,7 +307,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 								selected = map.gameHexs[i][j].getCity();
 								int k = 4;
 								for(String str: ((City)selected).building.buildings.keySet()){
+									System.out.println(str);
 									((JButton)scrollComponents.get(k)).setText(str);
+									((JButton)scrollComponents.get(k)).setVisible(true);
 									k++;
 								}
 							} else if (e.getButton() == e.BUTTON3 && isSelected
