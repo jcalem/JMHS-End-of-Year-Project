@@ -121,16 +121,6 @@ public class HexTile {
 		Image img = new ImageIcon("sea.jpg").getImage();
 		if(isPartOfCity)
 		{
-			if(getType().equals("land")){
-				g.setClip(getShape());
-				g.drawImage(img2, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
-				Unit.draw(g);
-			}
-			else{
-				g.setClip(getShape());
-				g.drawImage(img1, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
-				Unit.draw(g);
-			}
 			
 		}
 		else if(getType().equals("land")){

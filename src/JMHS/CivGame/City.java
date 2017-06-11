@@ -15,6 +15,8 @@ public class City {
 	Buildings building;
 	Image img2 = new ImageIcon("land1.jpg").getImage();
 	Image img1 = new ImageIcon("sea1.jpg").getImage();
+	Image center = new ImageIcon("babysach.jpg"
+			+ "").getImage();
 	public City(int locx, int locy){
 		this.locx = locx;
 		this.locy = locy;
@@ -22,15 +24,28 @@ public class City {
 		building = new Buildings();
 	}
 	public void draw(Graphics g){
-//		for(HexTile t: area)
-//		{
-//			double sin30 = t.RADIUS * Math.sin(Math.PI / 6);
-//			double sin60 = t.RADIUS * Math.sin(Math.PI / 3);
-//			if(t.getType().equals("land"))
-//				g.drawImage(img2, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
-//			else
-//				g.drawImage(img1, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
-//		}
+		HexTile cityCenter = Main.map.gameHexs[locx][locy];
+		double sin30 = cityCenter.RADIUS * Math.sin(Math.PI / 6);
+		double sin60 = cityCenter.RADIUS * Math.sin(Math.PI / 3);
+		for(HexTile t: area)
+		{
+			if(t.equals(cityCenter))
+			{
+				g.setClip(t.getShape());
+				g.drawImage(center, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+				Unit.draw(g);
+			}
+			else if(t.getType().equals("land")){
+				g.setClip(t.getShape());
+				g.drawImage(img2, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
+				Unit.draw(g);
+			}
+			else{
+				g.setClip(t.getShape());
+				g.drawImage(img1, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
+				Unit.draw(g);
+			}
+		}
 	}
 	public ArrayList<HexTile> getTiles(){
 		return area;
