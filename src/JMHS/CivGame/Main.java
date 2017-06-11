@@ -197,6 +197,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			victoryProgress.draw(g);
 		}
 		
+		
 		frame.repaint();
 
 	}

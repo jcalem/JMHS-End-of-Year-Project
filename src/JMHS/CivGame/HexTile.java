@@ -120,6 +120,7 @@ public class HexTile {
 		else{
 			g.setClip(getShape());
 			g.drawImage(img, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+			Unit.draw(g);
 		}
 			
 		//g.fillPolygon(p);
