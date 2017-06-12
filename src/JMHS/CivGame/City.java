@@ -3,6 +3,7 @@ package JMHS.CivGame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Polygon;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -13,12 +14,14 @@ public class City {
 	ArrayList<HexTile> area;
 	int FPT, food, PTT, production;
 	Buildings building;
+	Civilization myCiv;
 	Image img2 = new ImageIcon("land1.jpg").getImage();
 	Image img1 = new ImageIcon("sea1.jpg").getImage();
 	Image center = new ImageIcon("babysach.jpg").getImage();
-	public City(int locx, int locy){
+	public City(int locx, int locy, Civilization c){
 		this.locx = locx;
 		this.locy = locy;
+		this.myCiv = c;
 		area = HexMap.getSurroundingTiles(this.locx, this.locy, 2);
 		building = new Buildings();
 	}
@@ -26,8 +29,9 @@ public class City {
 		HexTile cityCenter = Main.map.gameHexs[locx][locy];
 		double sin30 = cityCenter.RADIUS * Math.sin(Math.PI / 6);
 		double sin60 = cityCenter.RADIUS * Math.sin(Math.PI / 3);
+		
 		for(HexTile t: area)
-		{
+		{	
 			if(t.equals(cityCenter))
 			{
 				g.setClip(t.getShape());
@@ -44,10 +48,25 @@ public class City {
 				g.drawImage(img1, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
 				Unit.draw(g);
 			}
+			if(Main.grid){
+				int[] ycoords = { (int) Math.round(t.y + t.RADIUS), (int) Math.round(sin30 + t.y), (int) Math.round(t.y - sin30),
+						(int) Math.round(t.y - t.RADIUS), (int) Math.round(t.y - sin30), (int) Math.round(sin30 + t.y) };
+				int[] xcoords = { (int) Math.round(t.x), (int) Math.round(sin60 + t.x), (int) Math.round(sin60 + t.x),
+						(int) Math.round(t.x), (int) Math.round(t.x - sin60), (int) Math.round(t.x - sin60) };
+
+				Polygon p = new Polygon(xcoords, ycoords, 6);
+				
+				g.setColor(Color.BLACK);
+				g.drawPolygon(p);
+			}
 		}
 	}
 	public ArrayList<HexTile> getTiles(){
 		return area;
+	}
+	public Civilization getCiv()
+	{
+		return myCiv;
 	}
 	public void setFPT(int FPT){
 		this.FPT = FPT;

@@ -8,7 +8,7 @@ public class Settler extends Unit {
 	}
 
 	public void createCity() {
-		City newCity = new City(locx, locy);
+		City newCity = new City(locx, locy, getCiv());
 		civ.addCity(newCity);
 		getCiv().units.remove(this);
 		this.img = null;

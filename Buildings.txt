@@ -1,3 +1,16 @@
-Monument 
-Library 
-Your_Mom 
+Monument' Resource
+Library' Resource
+Granary' Resource
+Amphitheater' Resource
+University' Resource
+Workshop' Resource
+Bank' Resource
+Opera House' Resource
+Factory' Resource
+Public School' Resource
+Stock Exchange' Resource
+Broadcast Tower' Resource
+Hotel' Resource
+Research Lab' Resource
+Nuclear Plant' Resource
+Windmill' Resource

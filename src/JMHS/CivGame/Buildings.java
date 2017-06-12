@@ -8,15 +8,18 @@ public class Buildings {
 	
 	Scanner sc;
 	HashMap<String, String[]> buildings = new HashMap<String, String[]>();
+	public Buildings(){
+		openFile();
+	}
 	public void openFile(){
 		try{
 			sc = new Scanner(new File("Buildings.txt"));
 			while(sc.hasNextLine()){
 				String str = sc.nextLine();
-				String key = str.substring(0, str.indexOf(' '));
+				System.out.println(str);
+				String key = str.substring(0, str.indexOf('\''));
 				String[] value = str.substring(str.indexOf('0') + 1).split("\\s+");
 					buildings.put(key, value);
-			System.out.println("TEST");
 			}
 		}
 		catch(Exception e){

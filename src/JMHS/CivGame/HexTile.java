@@ -140,8 +140,6 @@ public class HexTile {
 		if(Main.grid){
 			g.setColor(Color.BLACK);
 			g.drawPolygon(p);
-			
-			
 		}
 		
 		

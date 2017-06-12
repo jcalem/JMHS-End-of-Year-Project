@@ -293,10 +293,11 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 								}
 								if(selected instanceof Settler)
 								{
+									resetButtons();
 									((JButton)scrollComponents.get(4)).addActionListener(new CreateCityListener((Settler)selected));
 									((JButton)scrollComponents.get(4)).setText("Create City!");
 									((JButton)scrollComponents.get(4)).setVisible(true);
-									
+
 									for(int n = 5; n < scrollComponents.size(); n++)
 									{
 										scrollComponents.get(n).setVisible(false);
@@ -306,10 +307,12 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 							else if(map.gameHexs[i][j].hasCity()){
 								selected = map.gameHexs[i][j].getCity();
 								int k = 4;
+								resetButtons();
 								for(String str: ((City)selected).building.buildings.keySet()){
-									System.out.println(str);
 									((JButton)scrollComponents.get(k)).setText(str);
 									((JButton)scrollComponents.get(k)).setVisible(true);
+									((JButton)scrollComponents.get(k)).addActionListener(new BuyListener(str, map.gameHexs[i][j].getCity().getCiv())
+											);
 									k++;
 								}
 							} else if (e.getButton() == e.BUTTON3 && isSelected
@@ -407,14 +410,16 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		jpanel.setPreferredSize(new Dimension(200, l - 30));
 	}
 	private class BuyListener implements ActionListener{
-		public String myX;
-		public BuyListener(String x)
+		public String myX; public Civilization civ;
+		public BuyListener(String x, Civilization c)
 		{
 			myX = x;
+			civ = c;
 		}
 		public void actionPerformed(ActionEvent e)
 		{
 			System.out.println(myX);
+			requestFocus();
 		}
 	}
 	private class CreateCityListener implements ActionListener{
@@ -433,7 +438,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			{
 				System.out.println("You've already created a city with the selected Settler!");
 			}
-			
+			requestFocus();
 		}
 	}
 	private class DisplayTechTreeListener implements ActionListener {
@@ -471,7 +476,17 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			requestFocus();
 		}
 	}
-
+	public void resetButtons()
+	{
+		for(int i = 4; i < scrollComponents.size(); i++)
+		{
+			ActionListener[] temp = ((JButton)scrollComponents.get(i)).getActionListeners();
+			for(int k = 0; k < ((JButton)scrollComponents.get(i)).getActionListeners().length; k++)
+			{
+				((JButton)scrollComponents.get(i)).removeActionListener(temp[k]);	
+			}
+		}
+	}
 	public void nextTurn() {
 		turn++;
 		turnDisplay.setText("Turn: " + turn);
