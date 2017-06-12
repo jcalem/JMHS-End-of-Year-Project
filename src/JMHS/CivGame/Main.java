@@ -304,17 +304,18 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 									}
 								}
 							}
-							else if(map.gameHexs[i][j].hasCity()){
+							else if(map.gameHexs[i][j].hasCity() && map.gameHexs[i][j].getCity().getCiv().equals(playerCiv)){
 								selected = map.gameHexs[i][j].getCity();
 								int k = 4;
 								resetButtons();
 								for(String str: ((City)selected).building.buildings.keySet()){
 									((JButton)scrollComponents.get(k)).setText(str);
 									((JButton)scrollComponents.get(k)).setVisible(true);
-									((JButton)scrollComponents.get(k)).addActionListener(new BuyListener(str, map.gameHexs[i][j].getCity().getCiv())
-											);
+									((JButton)scrollComponents.get(k)).addActionListener(new BuyListener(str, map.gameHexs[i][j].getCity().getCiv()));
 									k++;
 								}
+								label1.setText(selected.toString());
+								label2.setText("Select what you want to build.");
 							} else if (e.getButton() == e.BUTTON3 && isSelected
 									&& availableTiles.contains(map.gameHexs[i][j])) {
 								((Unit) selected).move(i, j);
@@ -333,7 +334,6 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 									tile.setColor(c);
 								}
 								availableTiles.clear();
-
 							}
 						}
 					}
@@ -433,6 +433,12 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			try{
 				mySettler.createCity();
 				mySettler = null;
+				for(int i = 4; i < scrollComponents.size(); i++)
+				{
+					scrollComponents.get(i).setVisible(false);
+				}
+				label1.setText("");
+				label2.setText("");
 			}
 			catch (java.lang.NullPointerException j)
 			{

@@ -123,4 +123,8 @@ public class Civilization {
 	public ArrayList<City> getCities(){
 		return cities;
 	}
+	public String toString()
+	{
+		return myName;
+	}
 }

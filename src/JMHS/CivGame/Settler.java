@@ -15,6 +15,6 @@ public class Settler extends Unit {
 	}
 	
 	public String toString(){
-		return "Settler";
+		return getCiv().toString() + "'s Settler";
 	}
 }

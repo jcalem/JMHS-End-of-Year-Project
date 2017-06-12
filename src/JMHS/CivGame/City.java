@@ -80,4 +80,7 @@ public class City {
 	public int getFPT(){
 		return FPT;
 	}
+	public String toString(){
+		return getCiv().toString() + "'s City";
+	}
 }
