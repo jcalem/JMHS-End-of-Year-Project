@@ -16,8 +16,8 @@ public class Buildings {
 			sc = new Scanner(new File("Buildings.txt"));
 			while(sc.hasNextLine()){
 				String str = sc.nextLine();
-				String key = str.substring(0, str.indexOf('\''));
-				String[] value = str.substring(str.indexOf('0') + 1).split("\\s+");
+				String key = str.substring(0, str.indexOf('.'));
+				String[] value = str.substring(str.indexOf('.') + 1).split("\\s+");
 					buildings.put(key, value);
 			}
 		}

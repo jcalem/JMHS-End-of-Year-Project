@@ -84,13 +84,13 @@ public class HexTile {
 		}
 		else if (moisture > .72){
 			production = 2;
-			gold = 1;
+			gold = 0;
 			culture = 0;
 			science = 0;
 			return "hill";
 		}
 		else if(moisture > .6){
-			production = 1;
+			production = 0;
 			gold = 0;
 			culture = 0;
 			science = 2;

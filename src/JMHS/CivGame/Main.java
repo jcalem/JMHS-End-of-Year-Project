@@ -95,12 +95,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		displayingMap = displayingTechTree = displayingVictoryProgress = true;
 
 		goldDisplay = new JMenuItem("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
-		cultureDisplay = new JMenuItem(
-				"Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() + ")");
-		scienceDisplay = new JMenuItem(
-				"Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT() + ")");
-		turnDisplay = new JMenuItem(
-				"Turn: " + turn);
+		cultureDisplay = new JMenuItem("Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() + ")");
+		scienceDisplay = new JMenuItem("Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT() + ")");
+		turnDisplay = new JMenuItem("Turn: " + turn);
 
 		goldDisplay.setEnabled(false);
 		cultureDisplay.setEnabled(false);
@@ -315,7 +312,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 									k++;
 								}
 								label1.setText(selected.toString());
-								label2.setText("Select what you want to build.");
+								label2.setText("Production: " + ((City)selected).getPPT());
 							} else if (e.getButton() == e.BUTTON3 && isSelected
 									&& availableTiles.contains(map.gameHexs[i][j]) && selected instanceof Unit) {
 								((Unit) selected).move(i, j);
@@ -439,6 +436,8 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 				}
 				label1.setText("");
 				label2.setText("");
+				playerCiv.update();
+				updateJMenu();
 			}
 			catch (java.lang.NullPointerException j)
 			{
@@ -493,6 +492,12 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			}
 		}
 	}
+	public void updateJMenu()
+	{
+		scienceDisplay.setText("Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT() + ")");
+		cultureDisplay.setText("Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() + ")");
+		goldDisplay.setText("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
+	}
 	public void nextTurn() {
 		turn++;
 		turnDisplay.setText("Turn: " + turn);
@@ -504,14 +509,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			for (Unit unit : civ.getUnits()) {
 				unit.canMove(true);
 			}
-			for (City city : civ.getCities()) {
-				city.setFood(city.getFood() + city.getFPT());
-				// Building decrement
-				
-			}
-			scienceDisplay.setText("Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT() + ")");
-			cultureDisplay.setText("Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() + ")");
-			goldDisplay.setText("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
 		}
+		updateJMenu();
 	}
 }

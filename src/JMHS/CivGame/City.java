@@ -12,7 +12,7 @@ public class City {
 	
 	int locx, locy;
 	ArrayList<HexTile> area;
-	int FPT, food, PTT, production;
+	int PPT, production;
 	Buildings building;
 	Civilization myCiv;
 	Image img2 = new ImageIcon("land1.jpg").getImage();
@@ -68,17 +68,22 @@ public class City {
 	{
 		return myCiv;
 	}
-	public void setFPT(int FPT){
-		this.FPT = FPT;
+	public void setPPT(int PPT){
+		this.PPT = PPT;
 	}
-	public void setFood(int food){
-		this.food = food;
+	public void setProduction(int production){
+		this.production = production;
 	}
-	public int getFood(){
-		return food;
+	public int getProduction(){
+		return this.production;
 	}
-	public int getFPT(){
-		return FPT;
+	public int getPPT(){
+		int temp = 0;
+		for(HexTile t: area)
+		{
+			temp += t.production;
+		}
+		return temp;
 	}
 	public String toString(){
 		return getCiv().toString() + "'s City";

@@ -101,7 +101,6 @@ public class Civilization {
 				goldPT += tile.getGold();
 				foodPT += tile.getFood();
 			}
-			city.setFPT(foodPT);
 		}
 		setGPT(goldPT);
 		setCPT(culturePT);
