@@ -21,12 +21,13 @@ public class HexMap {
 
 	public HexMap(int numx, int numy) {
 		int octaveCount = 5;
+		int octaveCount2 = 2;
 		gameHexs = new HexTile[numx][numy];
 		gameBoard2 = new HexTile[numx][numy];
 		GenerateMap hexColors = new GenerateMap(gameHexs.length, gameHexs[0].length);
 		GenerateMap hexMoisture = new GenerateMap(gameHexs.length, gameHexs[0].length);
 		float[][] color = hexColors.GeneratePerlinNoise(gameHexs.length, gameHexs[0].length, octaveCount);
-		float[][] moisture = hexMoisture.GeneratePerlinNoise(gameHexs.length, gameHexs[0].length, octaveCount - 1);
+		float[][] moisture = hexMoisture.GeneratePerlinNoise(gameHexs.length, gameHexs[0].length, octaveCount2);
 
 		for (int i = 0; i < gameHexs.length; i++) {
 			for (int j = 0; j < gameHexs[0].length; j++) {

@@ -18,12 +18,13 @@ public class HexTile {
 	private double mapx;
 	private double mapy;
 	public String type;
+	public String landType;
 	private float color;
 	private float moisture;
 	Color c;
 	Graphics g;
 
-	int gold, culture, science, food;
+	int gold, culture, science, food, production;
 	
 	public HexTile(double mapx, double mapy, float color, float moisture, int i, int j) {
 		this.i = i;
@@ -33,16 +34,8 @@ public class HexTile {
 		this.color = color;
 		this.moisture = moisture;
 		type = getType();
-		if (this.type.equals("land"))
-			setColor(new Color(1, 255, 1));
-		else if (this.type.equals("mountain"))
-			setColor(Color.GRAY);
-		else if (this.type.equals("desert"))
-			setColor(Color.YELLOW);
-		else{
-			setColor(new Color(1, 1, 255));
-		}
-			
+		if(type.equals("land"))
+			landType = getLandType();
 	}
 	public void setColor(Color c){
 		this.c = c;
@@ -70,18 +63,44 @@ public class HexTile {
 
 	public String getType() {
 		if (color <= .55)
+		{
+			production = 0;
+			gold = 1;
+			culture = 1;
+			science = 0;
 			return "sea";
+		}
 		else
 			return "land";
 	}
 
 	public String getLandType() {
-		if (moisture < .3)
+		if (moisture < .25){
+			production = 0;
+			gold = 0;
+			culture = 0;
+			science = 0;
 			return "desert";
-		if (moisture > .83)
-			return "mountain";
-		else
-			return "land";
+		}
+		else if (moisture > .72){
+			production = 2;
+			gold = 1;
+			culture = 0;
+			science = 0;
+			return "hill";
+		}
+		else if(moisture > .6){
+			production = 1;
+			gold = 0;
+			culture = 0;
+			science = 2;
+			return "jungle";
+		}
+		production = 1;
+		gold = 1;
+		culture = 0;
+		science = 0;
+		return "";
 	}
 	public Color getColor(){
 		return c;
@@ -124,8 +143,25 @@ public class HexTile {
 			
 		}
 		else if(getType().equals("land")){
-			g.setClip(getShape());
-			g.drawImage(img3, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+			if(landType.equals("desert")){
+				//Image img4 = new ImageIcon("babysach.jpg").getImage();
+				g.setClip(getShape());
+				g.drawImage(img3, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+			}
+			else if(landType.equals("hill")){
+				Image img4 = new ImageIcon("babysach.jpg").getImage();
+				g.setClip(getShape());
+				g.drawImage(img4, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+			}
+			else if(landType.equals("jungle")){
+				Image img4 = new ImageIcon("babysach.jpg").getImage();
+				g.setClip(getShape());
+				g.drawImage(img4, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+			}
+			else{
+				g.setClip(getShape());
+				g.drawImage(img3, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+			}
 			Unit.draw(g);
 		}
 		else{

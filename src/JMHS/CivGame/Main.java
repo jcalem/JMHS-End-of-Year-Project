@@ -284,13 +284,13 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 								isSelected = true;
 								selected = map.gameHexs[i][j].getUnit();
 								availableTiles = HexMap.getSurroundingTiles(i, j, ((Unit) selected).movingSpeed);
-								for (HexTile tile : availableTiles) {
+								/*for (HexTile tile : availableTiles) {
 									Color c = new Color((int) Math.round((tile.getColor().getRed() + 255) / 2),
 											(int) Math.round((tile.getColor().getGreen()) / 2),
 											(int) Math.round(tile.getColor().getBlue()));
 
 									tile.setColor(c);
-								}
+								}*/
 								if(selected instanceof Settler)
 								{
 									resetButtons();
@@ -317,7 +317,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 								label1.setText(selected.toString());
 								label2.setText("Select what you want to build.");
 							} else if (e.getButton() == e.BUTTON3 && isSelected
-									&& availableTiles.contains(map.gameHexs[i][j])) {
+									&& availableTiles.contains(map.gameHexs[i][j]) && selected instanceof Unit) {
 								((Unit) selected).move(i, j);
 								isSelected = false;
 								selected = null;
@@ -509,6 +509,9 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 				// Building decrement
 				
 			}
+			scienceDisplay.setText("Science: " + playerCiv.getScience() + " (+" + playerCiv.getSPT() + ")");
+			cultureDisplay.setText("Culture: " + playerCiv.getCulture() + " (+" + playerCiv.getCPT() + ")");
+			goldDisplay.setText("Gold: " + playerCiv.getGold() + " (+" + playerCiv.getGPT() + ")");
 		}
 	}
 }
