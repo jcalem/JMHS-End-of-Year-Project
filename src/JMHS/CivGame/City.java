@@ -17,7 +17,10 @@ public class City {
 	Civilization myCiv;
 	Image img2 = new ImageIcon("land1.jpg").getImage();
 	Image img1 = new ImageIcon("sea1.jpg").getImage();
-	Image center = new ImageIcon("babysach.jpg").getImage();
+	Image desert = new ImageIcon("desert1.jpg").getImage();
+	Image hills = new ImageIcon("hills1.jpg").getImage();
+	Image jungle = new ImageIcon("jungle1.jpg").getImage();
+	Image center = new ImageIcon("city.jpg").getImage();
 	public City(int locx, int locy, Civilization c){
 		this.locx = locx;
 		this.locy = locy;
@@ -39,8 +42,23 @@ public class City {
 				Unit.draw(g);
 			}
 			else if(t.getType().equals("land")){
+				if(t.getLandType().equals("desert")){
+					
+					g.setClip(t.getShape());
+					g.drawImage(desert, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+				}
+				else if(t.getLandType().equals("hill")){
+					g.setClip(t.getShape());
+					g.drawImage(hills, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+				}
+				else if(t.getLandType().equals("jungle")){
+					g.setClip(t.getShape());
+					g.drawImage(jungle, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+				}
+				else{
 				g.setClip(t.getShape());
-				g.drawImage(img2, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
+				g.drawImage(img2, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+				}
 				Unit.draw(g);
 			}
 			else{

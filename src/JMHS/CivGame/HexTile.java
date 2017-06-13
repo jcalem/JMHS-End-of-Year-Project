@@ -136,37 +136,38 @@ public class HexTile {
 		}
 		Polygon p = new Polygon(xcoords, ycoords, 6);
 		// g.setColor(new Color(color, color, color));
-		Image img3 = new ImageIcon("land.jpg").getImage();
-		Image img = new ImageIcon("sea.jpg").getImage();
+		Image land = new ImageIcon("land.jpg").getImage();
+		Image sea = new ImageIcon("sea.jpg").getImage();
+		Image desert = new ImageIcon("desert.jpg").getImage();
+		Image hills = new ImageIcon("hills.jpg").getImage();
+		Image jungle  = new ImageIcon("jungle.jpg").getImage();
 		if(isPartOfCity)
 		{
 			
 		}
 		else if(getType().equals("land")){
 			if(landType.equals("desert")){
-				//Image img4 = new ImageIcon("babysach.jpg").getImage();
+				
 				g.setClip(getShape());
-				g.drawImage(img3, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+				g.drawImage(desert, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
 			}
 			else if(landType.equals("hill")){
-				Image img4 = new ImageIcon("babysach.jpg").getImage();
 				g.setClip(getShape());
-				g.drawImage(img4, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+				g.drawImage(hills, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
 			}
 			else if(landType.equals("jungle")){
-				Image img4 = new ImageIcon("babysach.jpg").getImage();
 				g.setClip(getShape());
-				g.drawImage(img4, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+				g.drawImage(jungle, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
 			}
 			else{
 				g.setClip(getShape());
-				g.drawImage(img3, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+				g.drawImage(land, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
 			}
 			Unit.draw(g);
 		}
 		else{
 			g.setClip(getShape());
-			g.drawImage(img, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
+			g.drawImage(sea, (int)Math.round(x - sin60), (int)Math.round(y - RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * RADIUS), null);
 			Unit.draw(g);
 		}
 			
