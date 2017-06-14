@@ -45,19 +45,19 @@ public class City {
 				if(t.getLandType().equals("desert")){
 					
 					g.setClip(t.getShape());
-					g.drawImage(desert, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+					g.drawImage(desert, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
 				}
 				else if(t.getLandType().equals("hill")){
 					g.setClip(t.getShape());
-					g.drawImage(hills, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+					g.drawImage(hills, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
 				}
 				else if(t.getLandType().equals("jungle")){
 					g.setClip(t.getShape());
-					g.drawImage(jungle, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+					g.drawImage(jungle, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
 				}
 				else{
 				g.setClip(t.getShape());
-				g.drawImage(img2, (int)Math.round(cityCenter.x - sin60), (int)Math.round(cityCenter.y - cityCenter.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * cityCenter.RADIUS), null);
+				g.drawImage(img2, (int)Math.round(t.x - sin60), (int)Math.round(t.y - t.RADIUS), (int)Math.round(sin60 * 2), (int)Math.round(2 * t.RADIUS), null);
 				}
 				Unit.draw(g);
 			}
