@@ -30,12 +30,30 @@ public class Buildings {
 		for(int i = 1; i < buildings.get(building).length; i++){
 			add(effects[i], civ);
 		}
+		buildings.remove(building);
 	}
 	public void add(String str, Civilization civ){
 		switch(str.substring(1)){
 			case "g":	civ.setGPT(civ.getGPT() + Integer.parseInt(str.substring(0, 1)));
+					break;
 			case "s":	civ.setSPT(civ.getSPT() + Integer.parseInt(str.substring(0, 1)));
+					break;
 			case "c":	civ.setCPT(civ.getCPT() + Integer.parseInt(str.substring(0, 1)));
+					break;
 		}
+	}
+	public static String toString(String str){
+		String type = "";
+		switch(str.charAt(1)){
+			case 'c': type = "Culture";
+					break;
+			case 's': type = "Science";
+					break;
+			case 'g': type = "Gold";
+					break;
+			case 'p': type = "Production";
+					break;
+		}
+		return "+ " + str.substring(0, 1) + " " + type;
 	}
 }

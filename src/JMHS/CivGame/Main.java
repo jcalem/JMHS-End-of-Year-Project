@@ -146,7 +146,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 			start = System.nanoTime();
 			repaint();
 			elapsed = System.nanoTime() - start;
-			wait = (200 / 6) - elapsed / 1;
+			wait = (200 / 6) - elapsed / 100000;
 			if (wait <= 0)
 				wait = 5;
 			try {
@@ -302,12 +302,20 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 								}
 							}
 							else if(map.gameHexs[i][j].hasCity() && map.gameHexs[i][j].getCity().getCiv().equals(playerCiv)){
+
 								selected = map.gameHexs[i][j].getCity();
 								int k = 4;
 								resetButtons();
 								for(String str: ((City)selected).building.buildings.keySet()){
 									((JButton)scrollComponents.get(k)).setText(str);
 									((JButton)scrollComponents.get(k)).setVisible(true);
+									String[] effects = ((City)selected).building.buildings.get(str);
+									String effectsStr = "<html>" + "Production Cost: " + effects[0];
+									for(int n = 1; n < effects.length; n++){
+										effectsStr += "<br>" + Buildings.toString(effects[n]);
+									}
+									effectsStr += "</html>";
+									((JButton)scrollComponents.get(k)).setToolTipText(effectsStr);
 									((JButton)scrollComponents.get(k)).addActionListener(new BuyListener(str, map.gameHexs[i][j].getCity().getCiv()));
 									k++;
 								}
