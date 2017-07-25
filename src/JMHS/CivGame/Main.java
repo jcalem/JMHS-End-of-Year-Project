@@ -29,7 +29,7 @@ public class Main extends JPanel implements Runnable, KeyListener, MouseWheelLis
 		frame.add(new Main(), BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle(title);
-		frame.setVisible(true);
+		frame.setVisible(false);
 	}
 
 	private boolean isRunning = false;
